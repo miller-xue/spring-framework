@@ -80,6 +80,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
 		// Create a new XmlBeanDefinitionReader for the given BeanFactory.
+		// 创建一个BeanDefinition阅读器，通过阅读Xml文件，真正完成BeanDefinition的加载和注册
 		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
 
 		// Configure the bean definition reader with this context's
@@ -91,6 +92,8 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
 		initBeanDefinitionReader(beanDefinitionReader);
+
+		// 委托给BeanDefinition阅读器去加载BeanDefinition
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
@@ -110,21 +113,29 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	 * Load the bean definitions with the given XmlBeanDefinitionReader.
 	 * <p>The lifecycle of the bean factory is handled by the {@link #refreshBeanFactory}
 	 * method; hence this method is just supposed to load and/or register bean definitions.
+	 *
 	 * @param reader the XmlBeanDefinitionReader to use
 	 * @throws BeansException in case of bean registration errors
-	 * @throws IOException if the required XML document isn't found
+	 * @throws IOException    if the required XML document isn't found
 	 * @see #refreshBeanFactory
 	 * @see #getConfigLocations
 	 * @see #getResources
 	 * @see #getResourcePatternResolver
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
+		// 获取资源的定位
+		// 这里getConfigResources是一个空实现，真正的实现是调用子类的获取资源定位的方法
+		// 比如：ClassPathXmlApplication中进行了实现
+		//		而：FileSystemXmlApplicationContext没有使用该方法
 		Resource[] configResources = getConfigResources();
 		if (configResources != null) {
+			// XML Bean读取器调用其父类AbstractBeanDefinitionReader读取定位的资源
 			reader.loadBeanDefinitions(configResources);
 		}
+		// 如果子类中获取的资源定位为空，则获取FileSystemXmlApplicationContext构造方法中setConfigLocations方法设置的资源
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
+			// XML Bean读取器调用其父类AbstractBeanDefinitionReader读取定位的资源
 			reader.loadBeanDefinitions(configLocations);
 		}
 	}

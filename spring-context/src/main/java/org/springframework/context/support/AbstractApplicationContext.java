@@ -516,39 +516,54 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// 1. 刷新预处理
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 2. 创建IoC容器
+			//    加载解析XML文件（最终存储到Document对象中）
+			//    读取Document对象，并完成BeanDefinition的加载和注册
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
+			// 3.对ioc容器做一些预处理（公共属性）
 			// Prepare the bean factory for use in this context.
 			prepareBeanFactory(beanFactory);
 
 			try {
+				// 4.
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
+				// 5. 调用BeanFactoryPostProcessor后置处理器对BeanDefinition处理
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
+				// 6. 注册BeanPostProcessor后置处理器
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
+				// 7. 初始化一些消息源（国际化处理）
 				// Initialize message source for this context.
 				initMessageSource();
 
+				// 8. 初始化应用事件广播
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
+				// 9. 初始化一些特殊Bean对象
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
+				// 10. 注册一些监听器
 				// Check for listener beans and register them.
 				registerListeners();
 
+				// 11. 实例化剩余的单例Bean(非懒加载方式)
+				//		Bean的IOC、DI、AOP都发生在此步骤
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
+				// 12. 完成刷新时，发布对应事件
 				// Last step: publish corresponding event.
 				finishRefresh();
 			}
@@ -629,12 +644,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Tell the subclass to refresh the internal bean factory.
+	 *
 	 * @return the fresh BeanFactory instance
 	 * @see #refreshBeanFactory()
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		//刷新并创建
 		refreshBeanFactory();
+		// 获取
 		return getBeanFactory();
 	}
 
