@@ -241,12 +241,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@SuppressWarnings("unchecked")
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
-
+		// 获取Bean名称
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
+		// 从缓存中获取单例Bean
 		Object sharedInstance = getSingleton(beanName);
+		// 如果获取到单例bean，则走下面代码
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
@@ -257,12 +259,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			// 如果取出来的Bean是FactoryBean的Bean实例，则需要从FactoryBean实例中产生一个对象实例
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
-
+		// 如果没有取出单例bean，则走下面代码
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
+			// 如果原型模式的bean发生循环依赖，则直接不处理，抛出异常
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -294,7 +298,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			try {
+				// 获取要实例化的bean的BeanDefinition对象
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+				// 检查该BeanDefinition对象对应的bean是否是抽象的
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
@@ -315,11 +321,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						}
 					}
 				}
-
+				// 单例
 				// Create bean instance.
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
+							// 创建单例Bean的主要方法
 							return createBean(beanName, mbd, args);
 						}
 						catch (BeansException ex) {
@@ -332,7 +339,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					});
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
-
+				// 多例
 				else if (mbd.isPrototype()) {
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
@@ -1796,10 +1803,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
+		// 如果bean实例是一个普通bean或者是一个引用的FactoryBean的时候，直接返回bean实例
 		if (!(beanInstance instanceof FactoryBean)) {
 			return beanInstance;
 		}
-
+		// 否则准备从FactoryBean中生产一个bean实例。
 		Object object = null;
 		if (mbd != null) {
 			mbd.isFactoryBean = true;
