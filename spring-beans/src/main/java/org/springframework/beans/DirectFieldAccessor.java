@@ -140,6 +140,7 @@ public class DirectFieldAccessor extends AbstractNestablePropertyAccessor {
 		@Override
 		public void setValue(@Nullable Object value) throws Exception {
 			try {
+				// 反射
 				ReflectionUtils.makeAccessible(this.field);
 				this.field.set(getWrappedInstance(), value);
 			}
