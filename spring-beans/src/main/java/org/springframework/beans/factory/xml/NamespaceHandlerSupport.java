@@ -70,7 +70,10 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+		// NamespaceHandler里面初始化了大量的BeanDefinitionParser来分别处理不通的自定义标签
+		// 从指定的NamespaceHandler中，匹配到指定的BeanDefinitionParser
 		BeanDefinitionParser parser = findParserForElement(element, parserContext);
+		// 调用指定自定义标签的解析器，完成具体解析工作
 		return (parser != null ? parser.parse(element, parserContext) : null);
 	}
 

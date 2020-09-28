@@ -102,9 +102,9 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 		CompositeComponentDefinition compositeDef =
 				new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
 		parserContext.pushContainingComponent(compositeDef);
-
+		// 向Ioc容器中注册AspectJAwareAdvisorAutoProxyCreator类的BeanDefinition：（用于创建AOP代理对象的）
 		configureAutoProxyCreator(parserContext, element);
-
+		// 解析自定义的标签
 		List<Element> childElts = DomUtils.getChildElements(element);
 		for (Element elt: childElts) {
 			String localName = parserContext.getDelegate().getLocalName(elt);
