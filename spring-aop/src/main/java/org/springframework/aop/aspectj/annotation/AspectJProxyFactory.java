@@ -46,6 +46,10 @@ import org.springframework.util.ClassUtils;
  * @see #getProxy(ClassLoader)
  * @see org.springframework.aop.framework.ProxyFactory
  */
+
+/**
+ * ProxyCreatorSupport的子类。用来创建代理对象。使用AspectJ语法。
+ */
 @SuppressWarnings("serial")
 public class AspectJProxyFactory extends ProxyCreatorSupport {
 

@@ -30,6 +30,10 @@ package org.springframework.aop;
  * @see org.springframework.aop.support.ClassFilters
  * @see org.springframework.aop.support.MethodMatchers
  */
+
+/**
+ * SpringAOP中切点的顶级抽象类。
+ */
 public interface Pointcut {
 
 	/**

@@ -39,6 +39,11 @@ package org.aopalliance.intercept;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 方法拦截器。是Interceptor的一个重要子类。主要方法：invoke。入参为：
+ * MethodInvocation
+ */
 @FunctionalInterface
 public interface MethodInterceptor extends Interceptor {
 

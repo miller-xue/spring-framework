@@ -44,6 +44,10 @@ import org.springframework.lang.Nullable;
  * @author Adrian Colyer
  * @since 2.0.3
  */
+
+/**
+ * AdvisorChainFactory的实现类。也是SpringAOP中唯一默认的实现类。
+ */
 @SuppressWarnings("serial")
 public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializable {
 

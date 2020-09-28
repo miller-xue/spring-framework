@@ -33,6 +33,11 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * AspectInstanceFactory的子类，实现了BeanFactoryAware接口
+ * 和aop:config配合使用的类
+ */
 public class SimpleBeanFactoryAwareAspectInstanceFactory implements AspectInstanceFactory, BeanFactoryAware {
 
 	@Nullable

@@ -24,6 +24,10 @@ import java.lang.reflect.Method;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 用于返回true
+ */
 @SuppressWarnings("serial")
 final class TrueMethodMatcher implements MethodMatcher, Serializable {
 

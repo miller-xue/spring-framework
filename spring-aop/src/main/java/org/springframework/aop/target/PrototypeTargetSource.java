@@ -31,6 +31,11 @@ import org.springframework.beans.BeansException;
  * @see #setBeanFactory
  * @see #setTargetBeanName
  */
+
+/**
+ * AbstractPrototypeBasedTargetSource的子类。从BeanFacory中获取
+ * Prototype类型的Bean。
+ */
 @SuppressWarnings("serial")
 public class PrototypeTargetSource extends AbstractPrototypeBasedTargetSource {
 

@@ -59,6 +59,10 @@ import org.springframework.util.StringUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * 使用AspectJ注解的通知类型顶级父类
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedenceInformation, Serializable {
 

@@ -36,6 +36,10 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see AnnotationMatchingPointcut
  */
+
+/**
+ * 带有注解的方法的匹配器
+ */
 public class AnnotationMethodMatcher extends StaticMethodMatcher {
 
 	private final Class<? extends Annotation> annotationType;

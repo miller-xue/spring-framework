@@ -59,6 +59,10 @@ import org.springframework.lang.Nullable;
  * @see #setUserAttribute
  * @see #getUserAttribute
  */
+
+/**
+ * ProxyMethodInvocation的子类。AOP拦截的执行入口类。
+ */
 public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Cloneable {
 
 	protected final Object proxy;

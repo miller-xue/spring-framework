@@ -46,6 +46,11 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @see #findCandidateAdvisors
  */
+
+/**
+ * AbstractAutoProxyCreator的子类。SpringAOP中的核心类。用来创建
+ * Advisor和代理对象。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 

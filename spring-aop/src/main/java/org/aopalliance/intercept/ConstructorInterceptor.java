@@ -41,6 +41,12 @@ package org.aopalliance.intercept;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 构造方法拦截器。是Interceptor的另一个重要的子类。在AOP联盟中是可以对
+ * 构造方法进行拦截的。这样的场景我们应该很少用到。主要方法为:construct
+ * 入参为ConstructorInvocation
+ */
 public interface ConstructorInterceptor extends Interceptor  {
 
 	/**

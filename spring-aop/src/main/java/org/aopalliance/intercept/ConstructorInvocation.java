@@ -28,6 +28,11 @@ import java.lang.reflect.Constructor;
  * @author Rod Johnson
  * @see ConstructorInterceptor
  */
+
+/**
+ * Invocation的另一个重要实现类。执行构造方法的拦截。主要方法：
+ * getConstructor()返回构造方法。
+ */
 public interface ConstructorInvocation extends Invocation {
 
 	/**

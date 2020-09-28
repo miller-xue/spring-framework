@@ -28,6 +28,12 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @see AdvisedSupport
  */
+
+/**
+ * SpringAOP中的一个核心类。在Advised中定义了一系列的配置接口，像：是否
+ * 暴露对象、是否强制使用CGlib等。ProxyConfig是对这些接口的实现，但是
+ * ProxyConfig却不是Advised的实现类
+ */
 public class ProxyConfig implements Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability. */

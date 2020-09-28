@@ -34,6 +34,11 @@ import org.springframework.aop.ProxyMethodInvocation;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 使用AspectJ Around注解的后置通知类型。实现了MethodInterceptor接口。
+ * 继承了AbstractAspectJAdvice。
+ */
 @SuppressWarnings("serial")
 public class AspectJAroundAdvice extends AbstractAspectJAdvice implements MethodInterceptor, Serializable {
 

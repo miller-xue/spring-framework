@@ -36,6 +36,10 @@ import org.springframework.util.Assert;
  * @see AnnotationClassFilter
  * @see AnnotationMethodMatcher
  */
+
+/**
+ * Pointcut的一个重要实现类。注解语法的切点类
+ */
 public class AnnotationMatchingPointcut implements Pointcut {
 
 	private final ClassFilter classFilter;

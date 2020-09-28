@@ -81,6 +81,11 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * @since 2.0
  */
+
+/**
+ * Pointcut的一个重要实现类。AspectJ语法切点类。同时实现了
+ * MethodMatcher，AspectJ语法切点的匹配在这个类中完成。
+ */
 @SuppressWarnings("serial")
 public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		implements ClassFilter, IntroductionAwareMethodMatcher, BeanFactoryAware {

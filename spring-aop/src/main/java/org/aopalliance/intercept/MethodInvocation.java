@@ -28,6 +28,11 @@ import java.lang.reflect.Method;
  * @author Rod Johnson
  * @see MethodInterceptor
  */
+
+/**
+ * Invocation的一个重要实现类。真正执行AOP方法的拦截。主要方法：
+ * getMethod()目标方法。
+ */
 public interface MethodInvocation extends Invocation {
 
 	/**

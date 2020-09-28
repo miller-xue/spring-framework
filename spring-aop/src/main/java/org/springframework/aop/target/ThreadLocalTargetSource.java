@@ -48,6 +48,10 @@ import org.springframework.core.NamedThreadLocal;
  * @see ThreadLocalTargetSourceStats
  * @see org.springframework.beans.factory.DisposableBean#destroy()
  */
+
+/**
+ * AbstractPrototypeBasedTargetSource的子类。和线程上下文相结合的类。
+ */
 @SuppressWarnings("serial")
 public class ThreadLocalTargetSource extends AbstractPrototypeBasedTargetSource
 		implements ThreadLocalTargetSourceStats, DisposableBean {

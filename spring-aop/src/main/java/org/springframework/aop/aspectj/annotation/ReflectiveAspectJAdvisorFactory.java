@@ -66,6 +66,11 @@ import org.springframework.util.comparator.InstanceComparator;
  * @author Phillip Webb
  * @since 2.0
  */
+
+/**
+ * AbstractAspectJAdvisorFactory的子类。使用AspectJ注解 生成Advisor的
+ * 具体实现类。
+ */
 @SuppressWarnings("serial")
 public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFactory implements Serializable {
 

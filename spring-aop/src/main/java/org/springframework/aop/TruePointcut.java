@@ -23,6 +23,11 @@ import java.io.Serializable;
  *
  * @author Rod Johnson
  */
+
+/**
+ * Pointcut的一个重要实现类。在DefaultPointcutAdvisor中使用的是
+ * TruePointcut。在进行切点匹配的时候永远返回true
+ */
 @SuppressWarnings("serial")
 final class TruePointcut implements Pointcut, Serializable {
 

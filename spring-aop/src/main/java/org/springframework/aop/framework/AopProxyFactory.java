@@ -41,6 +41,10 @@ package org.springframework.aop.framework;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 创建AOP代理对象的工厂类。选择使用JDK还是Cglib的方式来创建代理对象。
+ */
 public interface AopProxyFactory {
 
 	/**

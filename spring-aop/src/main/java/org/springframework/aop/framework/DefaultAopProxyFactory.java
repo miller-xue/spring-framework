@@ -43,6 +43,9 @@ import org.springframework.aop.SpringProxy;
  * @see AdvisedSupport#setProxyTargetClass
  * @see AdvisedSupport#setInterfaces
  */
+/**
+ * AopProxyFactory的子类，也是SpringAOP中唯一默认的实现类。
+ */
 @SuppressWarnings("serial")
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 

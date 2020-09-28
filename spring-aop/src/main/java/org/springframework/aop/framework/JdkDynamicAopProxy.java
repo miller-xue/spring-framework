@@ -61,6 +61,10 @@ import org.springframework.util.ClassUtils;
  * @see AdvisedSupport
  * @see ProxyFactory
  */
+
+/**
+ * AopProxy的子类。使用JDK的方式创建代理对象。它持有Advised对象。
+ */
 final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability. */

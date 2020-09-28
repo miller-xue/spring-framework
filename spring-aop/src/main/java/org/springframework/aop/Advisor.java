@@ -33,6 +33,10 @@ import org.aopalliance.aop.Advice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * SpringAOP中的核心类。组合了Advice
+ */
 public interface Advisor {
 
 	/**

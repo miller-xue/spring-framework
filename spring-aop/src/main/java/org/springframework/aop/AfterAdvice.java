@@ -26,6 +26,10 @@ import org.aopalliance.aop.Advice;
  * @since 2.0.3
  * @see BeforeAdvice
  */
+
+/**
+ * 后置通知类。直接继承了Advice接口。
+ */
 public interface AfterAdvice extends Advice {
 
 }

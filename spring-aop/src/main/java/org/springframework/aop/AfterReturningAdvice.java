@@ -28,6 +28,10 @@ import org.springframework.lang.Nullable;
  * @see MethodBeforeAdvice
  * @see ThrowsAdvice
  */
+
+/**
+ * 后置返回通知类。直接继承了AfterAdvice接口。
+ */
 public interface AfterReturningAdvice extends AfterAdvice {
 
 	/**

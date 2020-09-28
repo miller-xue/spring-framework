@@ -38,6 +38,10 @@ import org.springframework.util.Assert;
  * @since 2.0.2
  * @see AnnotationAwareAspectJAutoProxyCreator
  */
+
+/**
+ * 工具类。负责构建Advisor、Advice。SpringAOP核心类
+ */
 public class BeanFactoryAspectJAdvisorsBuilder {
 
 	private final ListableBeanFactory beanFactory;

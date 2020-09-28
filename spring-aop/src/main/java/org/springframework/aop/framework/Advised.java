@@ -35,6 +35,10 @@ import org.springframework.aop.TargetSource;
  * @since 13.03.2003
  * @see org.springframework.aop.framework.AdvisedSupport
  */
+
+/**
+ * SpringAOP中的又一个核心类。它组合了Advisor和TargetSource即目标对象
+ */
 public interface Advised extends TargetClassAware {
 
 	/**

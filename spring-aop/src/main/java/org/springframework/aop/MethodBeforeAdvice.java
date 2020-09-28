@@ -28,6 +28,10 @@ import org.springframework.lang.Nullable;
  * @see AfterReturningAdvice
  * @see ThrowsAdvice
  */
+
+/**
+ * BeforeAdvice的子类。定义了方法before。执行前置通知。
+ */
 public interface MethodBeforeAdvice extends BeforeAdvice {
 
 	/**

@@ -58,6 +58,11 @@ import org.springframework.util.CollectionUtils;
  * @author Juergen Hoeller
  * @see org.springframework.aop.framework.AopProxy
  */
+
+/**
+ * Advised的一个实现类。SpringAOP中的一个核心类。继承了ProxyConfig实现
+ * 了Advised。
+ */
 public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/** use serialVersionUID from Spring 2.0 for interoperability. */

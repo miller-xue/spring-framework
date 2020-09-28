@@ -55,6 +55,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * AspectJAdvisorFactory的子类。使用AspectJ注解 生成Advisor的工厂类
+ */
 public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFactory {
 
 	private static final String AJC_MAGIC = "ajc$";

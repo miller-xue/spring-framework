@@ -41,6 +41,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * PointcutAdvisor的一个重要实现子类
+ */
 @SuppressWarnings("serial")
 final class InstantiationModelAwarePointcutAdvisorImpl
 		implements InstantiationModelAwarePointcutAdvisor, AspectJPrecedenceInformation, Serializable {

@@ -29,6 +29,10 @@ import org.springframework.util.Assert;
  * @since 2.0.3
  * @see #createAopProxy()
  */
+
+/**
+ * AdvisedSupport的子类。引用了AopProxyFactory用来创建代理对象
+ */
 @SuppressWarnings("serial")
 public class ProxyCreatorSupport extends AdvisedSupport {
 

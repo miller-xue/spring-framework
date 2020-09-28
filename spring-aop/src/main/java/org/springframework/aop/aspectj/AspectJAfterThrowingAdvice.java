@@ -30,6 +30,11 @@ import org.springframework.aop.AfterAdvice;
  * @author Rod Johnson
  * @since 2.0
  */
+
+/**
+ * 使用AspectJ Around注解的后置通知类型。实现了MethodInterceptor、
+ * AfterAdvice接口。继承了AbstractAspectJAdvice。
+ */
 @SuppressWarnings("serial")
 public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 		implements MethodInterceptor, AfterAdvice, Serializable {

@@ -32,6 +32,11 @@ import org.springframework.lang.Nullable;
  * @see AspectMetadata
  * @see org.aspectj.lang.reflect.AjType
  */
+
+/**
+ * AspectInstanceFactory的子类。含有Aspect注解元数据 Aspect切面实例工
+ * 厂类。
+ */
 public interface MetadataAwareAspectInstanceFactory extends AspectInstanceFactory {
 
 	/**

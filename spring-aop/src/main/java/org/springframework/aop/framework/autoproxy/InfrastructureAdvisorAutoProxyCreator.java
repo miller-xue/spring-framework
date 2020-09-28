@@ -27,6 +27,11 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0.7
  */
+
+/**
+ * AbstractAdvisorAutoProxyCreator的子类。SpringAOP中的核心类。基础建
+ * 设类。Spring事务默认的创建代理对象的类
+ */
 @SuppressWarnings("serial")
 public class InfrastructureAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 

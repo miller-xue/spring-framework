@@ -35,6 +35,11 @@ import org.springframework.util.ReflectionUtils;
  * @author Juergen Hoeller
  * @since 4.0
  */
+
+/**
+ * CglibAopProxy的子类。使用Cglib的方式创建代理对象。它持有Advised对
+ * 象。
+ */
 @SuppressWarnings("serial")
 class ObjenesisCglibAopProxy extends CglibAopProxy {
 

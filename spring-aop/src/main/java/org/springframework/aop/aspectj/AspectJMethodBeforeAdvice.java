@@ -29,6 +29,11 @@ import org.springframework.lang.Nullable;
  * @author Adrian Colyer
  * @since 2.0
  */
+
+/**
+ * 使用AspectJ Before注解的前置通知类型。实现了MethodBeforeAdvice继承
+ * 了AbstractAspectJAdvice。
+ */
 @SuppressWarnings("serial")
 public class AspectJMethodBeforeAdvice extends AbstractAspectJAdvice implements MethodBeforeAdvice, Serializable {
 

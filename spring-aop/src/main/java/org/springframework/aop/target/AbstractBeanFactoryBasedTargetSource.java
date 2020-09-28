@@ -47,6 +47,10 @@ import org.springframework.util.ObjectUtils;
  * @see ThreadLocalTargetSource
  * @see CommonsPool2TargetSource
  */
+
+/**
+ * TargetSource的子类。实现了BeanFactoryAware接口。
+ */
 public abstract class AbstractBeanFactoryBasedTargetSource implements TargetSource, BeanFactoryAware, Serializable {
 
 	/** use serialVersionUID from Spring 1.2.7 for interoperability. */

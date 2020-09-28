@@ -37,6 +37,12 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
  * @author Rob Harrop
  * @author Juergen Hoeller
  */
+
+/**
+ * AdvisorAdapterRegistry的实现类。也是SpringAOP中唯一默认的实现类。持
+ * 有：MethodBeforeAdviceAdapter、AfterReturningAdviceAdapter、
+ * ThrowsAdviceAdapter实例。
+ */
 @SuppressWarnings("serial")
 public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Serializable {
 

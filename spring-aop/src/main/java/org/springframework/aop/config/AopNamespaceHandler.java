@@ -52,6 +52,10 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * AOP 命名空间解析类，在用aop的时候，会在Spring配置文件的beans标签中引入:xmlns:aop
+ */
 public class AopNamespaceHandler extends NamespaceHandlerSupport {
 
 	/**
@@ -62,10 +66,12 @@ public class AopNamespaceHandler extends NamespaceHandlerSupport {
 	@Override
 	public void init() {
 		// In 2.0 XSD as well as in 2.1 XSD.
+		// 解析<aop:config>标签的类
 		registerBeanDefinitionParser("config", new ConfigBeanDefinitionParser());
+		// 解析<aop:aspectj-autoproxy />标签的类
 		registerBeanDefinitionParser("aspectj-autoproxy", new AspectJAutoProxyBeanDefinitionParser());
-		registerBeanDefinitionDecorator("scoped-proxy", new ScopedProxyBeanDefinitionDecorator());
 
+		registerBeanDefinitionDecorator("scoped-proxy", new ScopedProxyBeanDefinitionDecorator());
 		// Only in 2.0 XSD: moved to context namespace as of 2.1
 		registerBeanDefinitionParser("spring-configured", new SpringConfiguredBeanDefinitionParser());
 	}

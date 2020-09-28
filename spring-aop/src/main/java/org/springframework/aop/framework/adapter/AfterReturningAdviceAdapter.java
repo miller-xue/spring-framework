@@ -31,6 +31,14 @@ import org.springframework.aop.AfterReturningAdvice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 后置返回通知的适配器。支持后置返回通知类。有一个getInterceptor方法：
+ * 将Advisor适配为MethodInterceptor。Advisor持有Advice类型的实例，获取
+ * AfterReturningAdvice，将AfterReturningAdvice适配为
+ * AfterReturningAdviceInterceptor。AOP的拦截过程通过
+ * MethodInterceptor来完成。
+ */
 @SuppressWarnings("serial")
 class AfterReturningAdviceAdapter implements AdvisorAdapter, Serializable {
 

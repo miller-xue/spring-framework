@@ -43,6 +43,11 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
  * @see ThreadLocalTargetSource
  * @see CommonsPool2TargetSource
  */
+
+/**
+ * AbstractBeanFactoryBasedTargetSource的子类。对Prototype类型的Bean
+ * 的支持。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFactoryBasedTargetSource {
 

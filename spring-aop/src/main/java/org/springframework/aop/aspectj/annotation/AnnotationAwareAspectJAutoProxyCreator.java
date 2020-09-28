@@ -46,6 +46,12 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see org.springframework.aop.aspectj.annotation.AspectJAdvisorFactory
  */
+
+/**
+ * AspectJAwareAdvisorAutoProxyCreator的子类。使用AspectJ语法创建
+ * Advisor和代理对象的类。<aop:aspectj-autoproxy />标签默认注入到
+ * SpringAOP中的BeanDefinition。
+ */
 @SuppressWarnings("serial")
 public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorAutoProxyCreator {
 

@@ -34,6 +34,12 @@ import org.springframework.util.TypeUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * 使用AspectJ AfterReturning注解的后置通知类型。实现了
+ * AfterReturningAdvice、AfterAdvice接口。继承了
+ * AbstractAspectJAdvice。
+ */
 @SuppressWarnings("serial")
 public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
 		implements AfterReturningAdvice, AfterAdvice, Serializable {

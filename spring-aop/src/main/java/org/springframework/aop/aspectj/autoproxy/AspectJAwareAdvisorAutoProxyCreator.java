@@ -43,6 +43,11 @@ import org.springframework.util.ClassUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * AbstractAdvisorAutoProxyCreator的子类。使用AspectJ语法创建Advisor
+ * 和代理对象。
+ */
 @SuppressWarnings("serial")
 public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 

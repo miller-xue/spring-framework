@@ -34,6 +34,11 @@ import org.springframework.util.Assert;
  * @see AfterReturningAdviceInterceptor
  * @see ThrowsAdviceInterceptor
  */
+
+/**
+ * MethodBefore前置通知Interceptor。实现了MethodInterceptor接口。持有
+ * MethodBefore对象。
+ */
 @SuppressWarnings("serial")
 public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeAdvice, Serializable {
 

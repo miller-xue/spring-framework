@@ -80,6 +80,10 @@ import org.springframework.util.ReflectionUtils;
  * @see AdvisedSupport#setProxyTargetClass
  * @see DefaultAopProxyFactory
  */
+
+/**
+ * AopProxy的子类。使用Cglib的方法创建代理对象。它持有Advised对象。
+ */
 @SuppressWarnings("serial")
 class CglibAopProxy implements AopProxy, Serializable {
 
@@ -721,6 +725,10 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Implementation of AOP Alliance MethodInvocation used by this AOP proxy.
+	 */
+	/**
+	 * ReflectiveMethodInvocation的子类。对Cglib反射调用目标方法进行了一点
+	 * 改进。
 	 */
 	private static class CglibMethodInvocation extends ReflectiveMethodInvocation {
 

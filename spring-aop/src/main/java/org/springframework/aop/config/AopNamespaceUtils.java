@@ -40,6 +40,10 @@ import org.springframework.lang.Nullable;
  * @since 2.0
  * @see AopConfigUtils
  */
+
+/**
+ * AOP命名空间解析工具类，在上面AspectJAutoProxyBeanDefinitionParser 和ConfigBeanDefinitionParser 中被引用。
+ */
 public abstract class AopNamespaceUtils {
 
 	/**

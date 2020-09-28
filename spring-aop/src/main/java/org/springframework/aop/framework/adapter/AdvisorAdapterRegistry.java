@@ -28,6 +28,11 @@ import org.springframework.aop.Advisor;
  * @author Rod Johnson
  * @author Rob Harrop
  */
+
+/**
+ * Advisor适配注册器类。用来将Advice适配为Advisor。将Advisor适配为
+ * MethodInterceptor。
+ */
 public interface AdvisorAdapterRegistry {
 
 	/**

@@ -89,6 +89,13 @@ import org.springframework.util.StringUtils;
  * @see BeanNameAutoProxyCreator
  * @see DefaultAdvisorAutoProxyCreator
  */
+
+/**
+ * ProxyProcessorSupport的重要子类。SpringAOP中的核心类。实现了
+ * SmartInstantiationAwareBeanPostProcessor、BeanFactoryAware接口。
+ * 自动创建代理对象的类。我们在使用AOP的时候基本上都是用的这个类来进程
+ * Bean的拦截，创建代理对象。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware {

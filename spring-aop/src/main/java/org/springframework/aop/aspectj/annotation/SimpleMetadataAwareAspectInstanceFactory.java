@@ -28,6 +28,11 @@ import org.springframework.core.annotation.OrderUtils;
  * @author Juergen Hoeller
  * @since 2.0.4
  */
+
+/**
+ * MetadataAwareAspectInstanceFactory的实例。在AspectJProxyFactory中
+ * 有使用
+ */
 public class SimpleMetadataAwareAspectInstanceFactory extends SimpleAspectInstanceFactory
 		implements MetadataAwareAspectInstanceFactory {
 

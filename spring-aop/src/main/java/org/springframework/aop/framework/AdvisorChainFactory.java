@@ -27,6 +27,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 获取Advisor链的接口。
+ */
 public interface AdvisorChainFactory {
 
 	/**

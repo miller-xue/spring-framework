@@ -31,6 +31,10 @@ import org.springframework.lang.Nullable;
  * @since 2.0
  * @see org.springframework.beans.factory.BeanFactory#getBean
  */
+
+/**
+ * Aspect实例工厂类
+ */
 public interface AspectInstanceFactory extends Ordered {
 
 	/**

@@ -27,6 +27,11 @@ package org.springframework.aop.target;
  * @author Juergen Hoeller
  * @since 2.0.3
  */
+
+/**
+ * AbstractBeanFactoryBasedTargetSource的子类。从BeanFactory中获取单
+ * 例Bean。
+ */
 @SuppressWarnings("serial")
 public class SimpleBeanTargetSource extends AbstractBeanFactoryBasedTargetSource {
 

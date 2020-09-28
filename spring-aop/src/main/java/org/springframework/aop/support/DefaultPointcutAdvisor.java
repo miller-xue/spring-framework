@@ -35,6 +35,11 @@ import org.springframework.lang.Nullable;
  * @see #setPointcut
  * @see #setAdvice
  */
+
+/**
+ * PointcutAdvisor的另一个重要实现子类。可以将Advice包装为Advisor。在
+ * SpringAOP中是以Advisor为主线。向Advice靠拢
+ */
 @SuppressWarnings("serial")
 public class DefaultPointcutAdvisor extends AbstractGenericPointcutAdvisor implements Serializable {
 

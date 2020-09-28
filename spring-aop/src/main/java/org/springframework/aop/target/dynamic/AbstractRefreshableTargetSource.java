@@ -37,6 +37,10 @@ import org.springframework.lang.Nullable;
  * @see #requiresRefresh()
  * @see #freshTarget()
  */
+
+/**
+ * TargetSource的子类。支持可刷新的热部署的目标对象。
+ */
 public abstract class AbstractRefreshableTargetSource implements TargetSource, Refreshable {
 
 	/** Logger available to subclasses. */

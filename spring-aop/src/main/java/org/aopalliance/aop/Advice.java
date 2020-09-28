@@ -23,6 +23,11 @@ package org.aopalliance.aop;
  * @author Rod Johnson
  * @version $Id: Advice.java,v 1.1 2004/03/19 17:02:16 johnsonr Exp $
  */
+
+/**
+ * AOP联盟中的一个标识接口。通知和Interceptor顶级类。我们说的各种通知类
+ * 型都要实现这个接口
+ */
 public interface Advice {
 
 }

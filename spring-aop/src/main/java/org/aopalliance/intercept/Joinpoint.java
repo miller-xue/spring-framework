@@ -37,6 +37,11 @@ import java.lang.reflect.AccessibleObject;
  * @author Rod Johnson
  * @see Interceptor
  */
+
+/**
+ * AOP联盟中的连接点类。主要的方法是：proceed()执行下一个拦截器。
+ * getThis()获取目标对象。
+ */
 public interface Joinpoint {
 
 	/**

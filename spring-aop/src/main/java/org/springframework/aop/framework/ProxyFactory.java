@@ -32,6 +32,10 @@ import org.springframework.util.ClassUtils;
  * @author Rob Harrop
  * @since 14.03.2003
  */
+
+/**
+ * ProxyCreatorSupport的子类。用来创建代理对象。在SpringAOP中用的最多。
+ */
 @SuppressWarnings("serial")
 public class ProxyFactory extends ProxyCreatorSupport {
 

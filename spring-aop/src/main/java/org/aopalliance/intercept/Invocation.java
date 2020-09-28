@@ -24,6 +24,11 @@ package org.aopalliance.intercept;
  *
  * @author Rod Johnson
  */
+
+/**
+ * AOP拦截的执行类。是Joinpoint的子类。主要方法：getArguments()获取参
+ * 数。
+ */
 public interface Invocation extends Joinpoint {
 
 	/**

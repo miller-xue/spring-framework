@@ -31,6 +31,10 @@ import org.springframework.util.StringUtils;
  * @since 2.0.3
  * @see AbstractAutoProxyCreator
  */
+
+/**
+ * SpringAOP自动创建代理对象的工具类。
+ */
 public abstract class AutoProxyUtils {
 
 	/**

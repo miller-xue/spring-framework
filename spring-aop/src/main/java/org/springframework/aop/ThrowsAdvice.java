@@ -48,6 +48,10 @@ package org.springframework.aop;
  * @see AfterReturningAdvice
  * @see MethodBeforeAdvice
  */
+
+/**
+ * 后置异常通知类。直接继承了AfterAdvice接口。
+ */
 public interface ThrowsAdvice extends AfterAdvice {
 
 }

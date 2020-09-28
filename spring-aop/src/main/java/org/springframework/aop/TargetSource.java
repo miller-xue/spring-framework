@@ -33,6 +33,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 持有目标对象的接口
+ */
 public interface TargetSource extends TargetClassAware {
 
 	/**

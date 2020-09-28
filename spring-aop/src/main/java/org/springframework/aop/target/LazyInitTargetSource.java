@@ -57,6 +57,11 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.BeanFactory#getBean
  * @see #postProcessTargetObject
  */
+
+/**
+ * AbstractBeanFactoryBasedTargetSource的子类。从BeanFactory中获取单
+ * 例Bean。支持延迟初始化。
+ */
 @SuppressWarnings("serial")
 public class LazyInitTargetSource extends AbstractBeanFactoryBasedTargetSource {
 

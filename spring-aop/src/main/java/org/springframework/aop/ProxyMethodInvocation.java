@@ -33,6 +33,10 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.aop.framework.ReflectiveMethodInvocation
  * @see org.springframework.aop.support.DelegatingIntroductionInterceptor
  */
+
+/**
+ * 含有代理对象的。MethodInvocation的子类。
+ */
 public interface ProxyMethodInvocation extends MethodInvocation {
 
 	/**

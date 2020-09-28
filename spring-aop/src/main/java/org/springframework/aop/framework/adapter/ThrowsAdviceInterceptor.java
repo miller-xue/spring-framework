@@ -54,6 +54,11 @@ import org.springframework.util.Assert;
  * @see MethodBeforeAdviceInterceptor
  * @see AfterReturningAdviceInterceptor
  */
+
+/**
+ * 后置异常通知Interceptor。实现了MethodInterceptor和AfterAdvice接口。
+ * 要求方法名为：afterThrowing
+ */
 public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 
 	private static final String AFTER_THROWING = "afterThrowing";

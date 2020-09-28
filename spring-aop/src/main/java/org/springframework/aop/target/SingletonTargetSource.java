@@ -35,6 +35,10 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @see org.springframework.aop.framework.AdvisedSupport#setTarget(Object)
  */
+
+/**
+ * TargetSource的子类。适用于单例目标对象。
+ */
 public class SingletonTargetSource implements TargetSource, Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability. */

@@ -54,6 +54,10 @@ import org.aopalliance.aop.Advice;
  * @author Rod Johnson
  * @see Joinpoint
  */
+
+/**
+ * AOP联盟中进行方法拦截的一个标识接口。是Advice的子类。
+ */
 public interface Interceptor extends Advice {
 
 }

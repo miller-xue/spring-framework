@@ -31,6 +31,14 @@ import org.springframework.aop.MethodBeforeAdvice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 前置通知的适配器。支持前置通知类。有一个getInterceptor方法：将
+ * Advisor适配为MethodInterceptor。Advisor持有Advice类型的实例，获取
+ * MethodBeforeAdvice，将MethodBeforeAdvice适配为
+ * MethodBeforeAdviceInterceptor。AOP的拦截过程通过MethodInterceptor
+ * 来完成。
+ */
 @SuppressWarnings("serial")
 class MethodBeforeAdviceAdapter implements AdvisorAdapter, Serializable {
 

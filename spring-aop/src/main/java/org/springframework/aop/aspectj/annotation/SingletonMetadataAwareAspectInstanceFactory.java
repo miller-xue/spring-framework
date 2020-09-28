@@ -32,6 +32,12 @@ import org.springframework.core.annotation.OrderUtils;
  * @since 2.0
  * @see SimpleMetadataAwareAspectInstanceFactory
  */
+
+/**
+ * MetadataAwareAspectInstanceFactory的子类。继承了
+ * SimpleAspectInstanceFactory。单例Aspect实例类。在
+ * AspectJProxyFactory中有使用。
+ */
 @SuppressWarnings("serial")
 public class SingletonMetadataAwareAspectInstanceFactory extends SingletonAspectInstanceFactory
 		implements MetadataAwareAspectInstanceFactory, Serializable {

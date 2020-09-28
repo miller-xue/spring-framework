@@ -113,6 +113,10 @@ import org.springframework.lang.Nullable;
  * @see DisposableBean#destroy
  * @see org.springframework.beans.factory.support.RootBeanDefinition#getDestroyMethodName
  */
+
+/**
+ * Spring bean容器的根接口
+ */
 public interface BeanFactory {
 
 	/**
@@ -121,6 +125,8 @@ public interface BeanFactory {
 	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
 	 * will return the factory, not the instance returned by the factory.
 	 */
+	//用来引用一个实例，或把它和工厂产生的Bean区分开
+	//就是说，如果一个FactoryBean的名字为a，那么，&a会得到那个Factory
 	String FACTORY_BEAN_PREFIX = "&";
 
 

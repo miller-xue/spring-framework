@@ -50,6 +50,11 @@ import java.lang.reflect.Method;
  * @see Pointcut
  * @see ClassFilter
  */
+
+/**
+ * 切点匹配连接点的地方。即类中的某个方法和我们定义的切点表达式是否匹配、
+ * 能不能被AOP拦截
+ */
 public interface MethodMatcher {
 
 	/**

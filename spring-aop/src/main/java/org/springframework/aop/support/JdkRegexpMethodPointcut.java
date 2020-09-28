@@ -37,6 +37,10 @@ import java.util.regex.PatternSyntaxException;
  * @author Rob Harrop
  * @since 1.1
  */
+
+/**
+ * Pointcut的一个重要实现类。正则语法的切点类。
+ */
 @SuppressWarnings("serial")
 public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 

@@ -35,6 +35,10 @@ import org.springframework.util.Assert;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * HotSwappableTargetSource
+ */
 public class HotSwappableTargetSource implements TargetSource, Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability. */
