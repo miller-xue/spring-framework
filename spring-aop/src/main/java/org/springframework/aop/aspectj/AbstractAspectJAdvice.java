@@ -624,7 +624,9 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	 * @throws Throwable in case of invocation failure
 	 */
 	protected Object invokeAdviceMethod(
-			@Nullable JoinPointMatch jpMatch, @Nullable Object returnValue, @Nullable Throwable ex)
+			@Nullable JoinPointMatch jpMatch,
+			@Nullable Object returnValue,
+			@Nullable Throwable ex)
 			throws Throwable {
 
 		return invokeAdviceMethodWithGivenArgs(argBinding(getJoinPoint(), jpMatch, returnValue, ex));
