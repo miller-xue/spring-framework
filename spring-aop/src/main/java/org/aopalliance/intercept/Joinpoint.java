@@ -39,12 +39,14 @@ import java.lang.reflect.AccessibleObject;
  */
 
 /**
+ * 连接点
  * AOP联盟中的连接点类。主要的方法是：proceed()执行下一个拦截器。
  * getThis()获取目标对象。
  */
 public interface Joinpoint {
 
 	/**
+	 * 下一个拦截器
 	 * Proceed to the next interceptor in the chain.
 	 * <p>The implementation and the semantics of this method depends
 	 * on the actual joinpoint type (see the children interfaces).

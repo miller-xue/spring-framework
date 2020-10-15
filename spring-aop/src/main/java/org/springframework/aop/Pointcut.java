@@ -33,18 +33,21 @@ package org.springframework.aop;
 
 /**
  * SpringAOP中切点的顶级抽象类。
+ * 切点	表示一组 joint point，这些 joint point 或是通过逻辑关系组合起来，或是通过通配、正则表达式等方式集中起来，它定义了相应的 Advice 将要发生的地方。
  */
 public interface Pointcut {
 
 	/**
 	 * Return the ClassFilter for this pointcut.
 	 * @return the ClassFilter (never {@code null})
+	 * 类过滤器
 	 */
 	ClassFilter getClassFilter();
 
 	/**
 	 * Return the MethodMatcher for this pointcut.
 	 * @return the MethodMatcher (never {@code null})
+	 * 方法匹配器
 	 */
 	MethodMatcher getMethodMatcher();
 

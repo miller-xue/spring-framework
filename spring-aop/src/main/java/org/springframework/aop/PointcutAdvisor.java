@@ -26,6 +26,8 @@ package org.springframework.aop;
 
 /**
  * SpringAOP中Advisor的重要子类。组合了切点Pointcut和Advice。
+ *
+ * 相当于@Aspect
  */
 public interface PointcutAdvisor extends Advisor {
 
