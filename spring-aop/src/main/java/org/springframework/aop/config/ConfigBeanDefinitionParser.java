@@ -103,18 +103,30 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 				new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
 		parserContext.pushContainingComponent(compositeDef);
 		// 向Ioc容器中注册AspectJAwareAdvisorAutoProxyCreator类的BeanDefinition：（用于创建AOP代理对象的）
+		// BeanPostProcessor可以对实例化之后的bean进行一些操作
+		//AspectJAwareAdvisorAutoProxyCreator实现了BeanPostProcessor接口，可以对目标对象实例化后，创建对应的代理对象
 		configureAutoProxyCreator(parserContext, element);
-		// 解析自定义的标签
+
+		// 解析自定义的标签<aop:config>标签的子标签<aop:aspect><aop:advisor><aop:pointcut>
 		List<Element> childElts = DomUtils.getChildElements(element);
 		for (Element elt: childElts) {
+			// 获取子标签的节点名称或者叫元素名称
 			String localName = parserContext.getDelegate().getLocalName(elt);
+			//<aop:pointcut>
+			// 产生一个AspectJExpressionPointcut的BeanDefinition对象，并注册
 			if (POINTCUT.equals(localName)) {
 				parsePointcut(elt, parserContext);
 			}
+			//<aop:advisor> spring aop
+			// 产生一个DefaultBeanFactoryPointcutAdvisor的BeanDefinition对象，并注册
 			else if (ADVISOR.equals(localName)) {
 				parseAdvisor(elt, parserContext);
-			}
-			else if (ASPECT.equals(localName)) {
+			} else if (ASPECT.equals(localName)) {
+				//<aop:aspect>
+				// 产生了很多BeanDefinition对象
+				// aop:after 等标签对应5个BeanDefinition对象
+				// aop:after 标签的method对应一个BeanDefinition对象
+				// 最终的AspectJPointcutAdvisor BeanDefinition类
 				parseAspect(elt, parserContext);
 			}
 		}
@@ -508,6 +520,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(AspectJExpressionPointcut.class);
 		beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
 		beanDefinition.setSynthetic(true);
+		// 设置切入点表达式
 		beanDefinition.getPropertyValues().add(EXPRESSION, expression);
 		return beanDefinition;
 	}

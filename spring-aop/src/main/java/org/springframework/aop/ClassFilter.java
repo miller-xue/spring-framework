@@ -32,6 +32,10 @@ package org.springframework.aop;
  * @see Pointcut
  * @see MethodMatcher
  */
+
+/**
+ * 过滤类是否是目标类
+ */
 @FunctionalInterface
 public interface ClassFilter {
 

@@ -44,7 +44,9 @@ public class AspectJMethodBeforeAdvice extends AbstractAspectJAdvice implements 
 	 * @param aif 增强方法类工厂包含实例
 	 */
 	public AspectJMethodBeforeAdvice(
-			Method aspectJBeforeAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aif) {
+			Method aspectJBeforeAdviceMethod,
+			AspectJExpressionPointcut pointcut,
+			AspectInstanceFactory aif) {
 
 		super(aspectJBeforeAdviceMethod, pointcut, aif);
 	}
@@ -52,6 +54,7 @@ public class AspectJMethodBeforeAdvice extends AbstractAspectJAdvice implements 
 
 	@Override
 	public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
+		// 调用增强类的方法
 		invokeAdviceMethod(getJoinPointMatch(), null, null);
 	}
 
