@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
 /**
  * 后置返回通知类。直接继承了AfterAdvice接口。
  */
-public interface AfterReturningAdvice extends AfterAdvice {
+public interface  AfterReturningAdvice extends AfterAdvice {
 
 	/**
 	 * Callback after a given method successfully returned.

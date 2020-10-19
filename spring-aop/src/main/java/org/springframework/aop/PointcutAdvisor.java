@@ -28,6 +28,9 @@ package org.springframework.aop;
  * SpringAOP中Advisor的重要子类。组合了切点Pointcut和Advice。
  *
  * 相当于@Aspect
+ * <h1>是SpringAop的实现</h1>
+ * <bean id="sleepAdvice" class="com.kkb.spring.aop.advice.SleepAdvice"/>
+ * <aop:advisor advice-ref="sleepAdvice" pointcut="execution(* *..*.*ServiceImpl.*(..))"/>
  */
 public interface PointcutAdvisor extends Advisor {
 
