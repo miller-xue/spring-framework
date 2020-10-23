@@ -556,7 +556,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
-		// bean初始化第一步，默认调用无参构造实例化bean
+		// 1.bean初始化第一步，默认调用无参构造实例化bean
 		// 构造参数依赖注入，就是发生在这一步
 		if (instanceWrapper == null) {
 			instanceWrapper = createBeanInstance(beanName, mbd, args);

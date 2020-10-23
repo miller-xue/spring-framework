@@ -129,7 +129,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 			// META-INF/spring.handlers文件中存储的value都是String类型的类名
 			String className = (String) handlerOrClassName;
 			try {
-				// 根据类名通过反射获取到NamspaceHandler的Class类对象
+				// 根据类名通过反射获取到NamespaceHandler的Class类对象
 				Class<?> handlerClass = ClassUtils.forName(className, this.classLoader);
 				if (!NamespaceHandler.class.isAssignableFrom(handlerClass)) {
 					throw new FatalBeanException("Class [" + className + "] for namespace [" + namespaceUri +

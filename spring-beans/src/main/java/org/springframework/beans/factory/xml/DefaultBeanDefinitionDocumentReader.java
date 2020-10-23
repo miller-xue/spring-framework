@@ -174,7 +174,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
 		// 加载的Document对象是否使用了Spring默认的XML命名空间（beans）
 		if (delegate.isDefaultNamespace(root)) {
-			// 获取Document对象根元素的所有子节点（beans，import，alias，context，aop等）
+			// 获取Document对象根元素的所有子节点（beans，import，alias，和其他自定义的标签context，aop等）
 			NodeList nl = root.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node node = nl.item(i);
