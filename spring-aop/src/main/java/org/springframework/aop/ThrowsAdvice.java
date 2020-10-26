@@ -51,6 +51,13 @@ package org.springframework.aop;
 
 /**
  * 后置异常通知类。直接继承了AfterAdvice接口。
+ *
+ * Spirng内部是用反射来实现方法匹配的，需要实现下列接口中的其中1个
+ * <pre class="code">public void afterThrowing(Exception ex)</pre>
+ * <pre class="code">public void afterThrowing(RemoteException)</pre>
+ * <pre class="code">public void afterThrowing(Method method, Object[] args, Object target, Exception ex)</pre>
+ * <pre class="code">public void afterThrowing(Method method, Object[] args, Object target, ServletException ex)</pre>
+ * Spirng设计者可能感觉如果全部声明成抽象方法的话，实现该接口就必须全部重写，代码冗余较高，所以干脆直接做成标识接口了
  */
 public interface ThrowsAdvice extends AfterAdvice {
 

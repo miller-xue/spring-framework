@@ -41,7 +41,6 @@ public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 
 	public AspectJAfterThrowingAdvice(
 			Method aspectJBeforeAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aif) {
-
 		super(aspectJBeforeAdviceMethod, pointcut, aif);
 	}
 
@@ -64,10 +63,12 @@ public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
 		try {
+			//执行
 			return mi.proceed();
 		}
 		catch (Throwable ex) {
 			if (shouldInvokeOnThrowing(ex)) {
+				// 有异常就执行
 				invokeAdviceMethod(getJoinPointMatch(), null, ex);
 			}
 			throw ex;
