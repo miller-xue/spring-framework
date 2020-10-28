@@ -302,9 +302,13 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	@Override
 	public Object postProcessAfterInitialization(@Nullable Object bean, String beanName) {
 		if (bean != null) {
+			// cacheKey就是beanName或者BeanClass
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
 			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
 				// 使用动态代理技术，产生代理对象
+				// bean：目标对象
+				// beanName：目标对象名称
+				// cacheKey：beanName或者beanClass
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
 		}
@@ -344,24 +348,33 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (StringUtils.hasLength(beanName) && this.targetSourcedBeans.contains(beanName)) {
 			return bean;
 		}
+		// 如果已经增强了，则不需要再生成代理
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
+		//
 		if (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) {
 			this.advisedBeans.put(cacheKey, Boolean.FALSE);
 			return bean;
 		}
 
 		// Create proxy if we have advice.
+		// 查找对代理类相关的advisor对象集合，此处就与point-cut表达式有关了
+		// 第一步：查找候选的Advisor（增强器）
+		// 第二步：针对目标对象获取合适的Advisor（增强其）
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
+		// 对应的advisor不为空才采取代理
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
+			// 通过jdk动态代理或者cglib动态代理，产生代理对象
+			// 第三步：针对目标对象产生代理对象
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+			// 放入代理类型缓存
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
 		}
-
+		// 放入通知缓存
 		this.advisedBeans.put(cacheKey, Boolean.FALSE);
 		return bean;
 	}
@@ -454,29 +467,36 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (this.beanFactory instanceof ConfigurableListableBeanFactory) {
 			AutoProxyUtils.exposeTargetClass((ConfigurableListableBeanFactory) this.beanFactory, beanName, beanClass);
 		}
-
+		// 创建代理工厂对象
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.copyFrom(this);
-
+		// 如果没有使用cglib代理
+		// isProxyTargetClass：就是判断aop:config标签的ProxyTargetClass属性，默认是false
 		if (!proxyFactory.isProxyTargetClass()) {
+			// 是否可能使用cglib代理
 			if (shouldProxyTargetClass(beanClass, beanName)) {
 				proxyFactory.setProxyTargetClass(true);
 			}
 			else {
+				// 查看beanClass对应的类是否韩永InitializingBean.class/DisposableBean.class/Aware.class接口
+				// 无则采用jdk动态代理，有则才有cglib动态代理
 				evaluateProxyInterfaces(beanClass, proxyFactory);
 			}
 		}
-
+		// 将Advice和Advisor都适配成Advisor，方便后面统一处理
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		proxyFactory.addAdvisors(advisors);
+		// 此处的targetSource一般为SingletonTargetSource
 		proxyFactory.setTargetSource(targetSource);
+		// 空实现
 		customizeProxyFactory(proxyFactory);
 
 		proxyFactory.setFrozen(this.freezeProxy);
+		// 是否设置预过滤模式，此处针对本文为true
 		if (advisorsPreFiltered()) {
 			proxyFactory.setPreFiltered(true);
 		}
-
+		// 获取jdk或者cglib去代理
 		return proxyFactory.getProxy(getProxyClassLoader());
 	}
 
