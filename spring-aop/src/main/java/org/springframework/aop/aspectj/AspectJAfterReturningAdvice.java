@@ -45,7 +45,9 @@ public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
 		implements AfterReturningAdvice, AfterAdvice, Serializable {
 
 	public AspectJAfterReturningAdvice(
-			Method aspectJBeforeAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aif) {
+			Method aspectJBeforeAdviceMethod,
+			AspectJExpressionPointcut pointcut,
+			AspectInstanceFactory aif) {
 
 		super(aspectJBeforeAdviceMethod, pointcut, aif);
 	}

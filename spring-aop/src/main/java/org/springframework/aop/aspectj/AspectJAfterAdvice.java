@@ -40,7 +40,9 @@ public class AspectJAfterAdvice extends AbstractAspectJAdvice
 		implements MethodInterceptor, AfterAdvice, Serializable {
 
 	public AspectJAfterAdvice(
-			Method aspectJBeforeAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aif) {
+			Method aspectJBeforeAdviceMethod,
+			AspectJExpressionPointcut pointcut,
+			AspectInstanceFactory aif) {
 
 		super(aspectJBeforeAdviceMethod, pointcut, aif);
 	}

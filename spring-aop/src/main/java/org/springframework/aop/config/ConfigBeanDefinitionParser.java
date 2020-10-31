@@ -233,7 +233,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 				Element declareParentsElement = declareParents.get(i);
 				beanDefinitions.add(parseDeclareParents(declareParentsElement, parserContext));
 			}
-
+/*---------------------------------------------------------------------------------------------------------------------*/
 			// We have to parse "advice" and all the advice kinds in one loop, to get the
 			// ordering semantics right.
 			// 获取<aop:aspect> 标签的所有子标签
@@ -259,14 +259,18 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 					//		2.将上一步创建的RootBeanDefinition写入一个新的RootBeanDefinition，构造一个新的对象，名为advisorDefinition
 					//		3.将advisorBeanDefinition注册到DefaultListableBeanFactory中
 					AbstractBeanDefinition advisorDefinition = parseAdvice(
-							aspectName, i, aspectElement, (Element) node, parserContext, beanDefinitions, beanReferences);
+							aspectName, i, aspectElement, (Element) node, parserContext, beanDefinitions, beanReferences
+					);
+
 					beanDefinitions.add(advisorDefinition);
 				}
 			}
+/*-------------------------------------------------解析advice结束--------------------------------------------------------------------*/
 
 			AspectComponentDefinition aspectComponentDefinition = createAspectComponentDefinition(
 					aspectElement, aspectId, beanDefinitions, beanReferences, parserContext);
 			parserContext.pushContainingComponent(aspectComponentDefinition);
+
 			// 得到所有<aop:aspect>下的<aop:pointcut>子标签
 			List<Element> pointcuts = DomUtils.getChildElementsByTagName(aspectElement, POINTCUT);
 			for (Element pointcutElement : pointcuts) {
@@ -351,7 +355,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			this.parseState.push(new AdviceEntry(parserContext.getDelegate().getLocalName(adviceElement)));
 
 			// create the method factory bean
-			// 创建方法工厂Bean的BeanDefinition对象：用于获取Advice增强类的Method对象
+			// 1.创建方法工厂Bean的BeanDefinition对象：用于获取Advice增强类的Method对象
 			RootBeanDefinition methodDefinition = new RootBeanDefinition(MethodLocatingFactoryBean.class);
 			// 设置MethodLocatingFactoryBean的targetBeanName为advice类的引用名称
 			methodDefinition.getPropertyValues().add("targetBeanName", aspectName);
@@ -379,7 +383,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			// 创建Advisor 通知其类的BeanDefinition对象
 			RootBeanDefinition advisorDefinition = new RootBeanDefinition(AspectJPointcutAdvisor.class);
 			advisorDefinition.setSource(parserContext.extractSource(adviceElement));
-			// 给通知器设置Advice对象属性值
+			// 给通知器设置构造器Advice对象属性值
 			advisorDefinition.getConstructorArgumentValues().addGenericArgumentValue(adviceDef);
 			if (aspectElement.hasAttribute(ORDER_PROPERTY)) {
 				advisorDefinition.getPropertyValues().add(
@@ -405,7 +409,8 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	 */
 	private AbstractBeanDefinition createAdviceDefinition(
 			Element adviceElement, ParserContext parserContext, String aspectName, int order,
-			RootBeanDefinition methodDef, RootBeanDefinition aspectFactoryDef,
+			RootBeanDefinition methodDef,
+			RootBeanDefinition aspectFactoryDef,
 			List<BeanDefinition> beanDefinitions, List<BeanReference> beanReferences) {
 		// 根据类型的不同，分别创建对应的BeanDefinition对象（可以去看看getAdviceClass方法）
 		RootBeanDefinition adviceDefinition = new RootBeanDefinition(getAdviceClass(adviceElement, parserContext));
@@ -428,10 +433,11 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			adviceDefinition.getPropertyValues().add(
 					ARG_NAMES_PROPERTY, adviceElement.getAttribute(ARG_NAMES));
 		}
-
+		// 通知的beanDefinition的构造器
 		ConstructorArgumentValues cav = adviceDefinition.getConstructorArgumentValues();
+		// methodDefinition
 		cav.addIndexedArgumentValue(METHOD_INDEX, methodDef);
-
+		// 解析每个advice对应的ponitCut
 		Object pointcut = parsePointcutProperty(adviceElement, parserContext);
 		if (pointcut instanceof BeanDefinition) {
 			cav.addIndexedArgumentValue(POINTCUT_INDEX, pointcut);
@@ -442,7 +448,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			cav.addIndexedArgumentValue(POINTCUT_INDEX, pointcutRef);
 			beanReferences.add(pointcutRef);
 		}
-
+		// 工厂类的引用
 		cav.addIndexedArgumentValue(ASPECT_INSTANCE_FACTORY_INDEX, aspectFactoryDef);
 
 		return adviceDefinition;
