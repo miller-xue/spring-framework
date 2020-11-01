@@ -45,7 +45,8 @@ import org.springframework.util.ClassUtils;
  */
 
 /**
- * AbstractAdvisorAutoProxyCreator的子类。使用AspectJ语法创建Advisor
+ * AbstractAdvisorAutoProxyCreator的子类。
+ * 使用AspectJ语法创建Advisor
  * 和代理对象。
  */
 @SuppressWarnings("serial")

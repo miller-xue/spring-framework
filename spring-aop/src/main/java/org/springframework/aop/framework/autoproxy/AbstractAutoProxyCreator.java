@@ -352,7 +352,8 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
-		//
+		// isInfrastructureClass方法：Advice/Pointcut/Advisor/AopInfrastructureBean接口的beanClass不进行代理
+		//shouldSkip：对beanName为aop内切面beanName也不进行代理
 		if (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) {
 			this.advisedBeans.put(cacheKey, Boolean.FALSE);
 			return bean;
@@ -361,7 +362,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// Create proxy if we have advice.
 		// 查找对代理类相关的advisor对象集合，此处就与point-cut表达式有关了
 		// 第一步：查找候选的Advisor（增强器）
-		// 第二步：针对目标对象获取合适的Advisor（增强其）
+		// 第二步：针对目标对象获取合适的Advisor（增强器）
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		// 对应的advisor不为空才采取代理
 		if (specificInterceptors != DO_NOT_PROXY) {
@@ -478,7 +479,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 				proxyFactory.setProxyTargetClass(true);
 			}
 			else {
-				// 查看beanClass对应的类是否韩永InitializingBean.class/DisposableBean.class/Aware.class接口
+				// 查看beanClass对应的类是否有InitializingBean.class/DisposableBean.class/Aware.class接口
 				// 无则采用jdk动态代理，有则才有cglib动态代理
 				evaluateProxyInterfaces(beanClass, proxyFactory);
 			}
