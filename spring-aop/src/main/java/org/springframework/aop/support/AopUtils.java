@@ -223,10 +223,11 @@ public abstract class AopUtils {
 	 */
 	public static boolean canApply(Pointcut pc, Class<?> targetClass, boolean hasIntroductions) {
 		Assert.notNull(pc, "Pointcut must not be null");
+		// 先使用ClassFilter对类级别进行匹配
 		if (!pc.getClassFilter().matches(targetClass)) {
 			return false;
 		}
-
+		// 在使用MethodMatcher 针对类中的方法进行匹配
 		MethodMatcher methodMatcher = pc.getMethodMatcher();
 		if (methodMatcher == MethodMatcher.TRUE) {
 			// No need to iterate the methods if we're matching any method anyway...
@@ -237,13 +238,14 @@ public abstract class AopUtils {
 		if (methodMatcher instanceof IntroductionAwareMethodMatcher) {
 			introductionAwareMethodMatcher = (IntroductionAwareMethodMatcher) methodMatcher;
 		}
-
+		// 将当前类和它的接口都加入classes集合中
 		Set<Class<?>> classes = new LinkedHashSet<>();
 		if (!Proxy.isProxyClass(targetClass)) {
 			classes.add(ClassUtils.getUserClass(targetClass));
 		}
 		classes.addAll(ClassUtils.getAllInterfacesForClassAsSet(targetClass));
-
+		// 使用methodMatcher匹配目标类的方法
+		// 不只匹配目标类，还会匹配父类和接口
 		for (Class<?> clazz : classes) {
 			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
 			for (Method method : methods) {
@@ -274,21 +276,24 @@ public abstract class AopUtils {
 	 * Can the given advisor apply at all on the given class?
 	 * <p>This is an important test as it can be used to optimize out a advisor for a class.
 	 * This version also takes into account introductions (for IntroductionAwareMethodMatchers).
-	 * @param advisor the advisor to check
-	 * @param targetClass class we're testing
+	 *
+	 * @param advisor          the advisor to check
+	 * @param targetClass      class we're testing
 	 * @param hasIntroductions whether or not the advisor chain for this bean includes
-	 * any introductions
+	 *                         any introductions
 	 * @return whether the pointcut can apply on any method
 	 */
 	public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean hasIntroductions) {
+		// 引介增强其
 		if (advisor instanceof IntroductionAdvisor) {
 			return ((IntroductionAdvisor) advisor).getClassFilter().matches(targetClass);
 		}
+		// PointcutAdvisor 包含Pointcut和Advice两个对象
+		// 针对方法级别对功能进行增强
 		else if (advisor instanceof PointcutAdvisor) {
 			PointcutAdvisor pca = (PointcutAdvisor) advisor;
 			return canApply(pca.getPointcut(), targetClass, hasIntroductions);
-		}
-		else {
+		} else {
 			// It doesn't have a pointcut so we assume it applies.
 			return true;
 		}
@@ -307,12 +312,15 @@ public abstract class AopUtils {
 			return candidateAdvisors;
 		}
 		List<Advisor> eligibleAdvisors = new ArrayList<>();
+		// 引介增强器
+		// IntroductionAdvisor 只要是针对类，增强功能是针对类级别的，说白了就是给类加接口来实现增强功能
 		for (Advisor candidate : candidateAdvisors) {
 			if (candidate instanceof IntroductionAdvisor && canApply(candidate, clazz)) {
 				eligibleAdvisors.add(candidate);
 			}
 		}
 		boolean hasIntroductions = !eligibleAdvisors.isEmpty();
+		// 普通增强器
 		for (Advisor candidate : candidateAdvisors) {
 			if (candidate instanceof IntroductionAdvisor) {
 				// already processed
