@@ -100,6 +100,11 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 		}
 	}
 
+	/**
+	 * 注册事务管理器
+	 * @param element
+	 * @param def
+	 */
 	private static void registerTransactionManager(Element element, BeanDefinition def) {
 		def.getPropertyValues().add("transactionManagerBeanName",
 				TxNamespaceHandler.getTransactionManagerName(element));

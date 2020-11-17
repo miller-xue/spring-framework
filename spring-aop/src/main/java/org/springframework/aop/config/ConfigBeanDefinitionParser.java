@@ -153,6 +153,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	 * {@link org.springframework.aop.Advisor} and any resulting {@link org.springframework.aop.Pointcut}
 	 * with the supplied {@link BeanDefinitionRegistry}.
 	 * 解析的是SpringAOP的实现，Spring的实现主要是靠接口来实现操作的，包括pointcut
+	 * <aop:advisor advice-ref="" pointcut=""/>
 	 */
 	private void parseAdvisor(Element advisorElement, ParserContext parserContext) {
 		AbstractBeanDefinition advisorDef = createAdvisorBeanDefinition(advisorElement, parserContext);

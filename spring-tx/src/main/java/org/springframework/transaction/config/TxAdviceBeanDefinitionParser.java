@@ -44,6 +44,9 @@ import org.springframework.util.xml.DomUtils;
  * @author Adrian Colyer
  * @author Chris Beams
  * @since 2.0
+ * 解析<tx:advice></tx:advice>
+ *
+ *
  */
 class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
@@ -73,41 +76,55 @@ class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
 	@Override
 	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
+		// 解析<tx:advice transaction-manager="">
 		builder.addPropertyReference("transactionManager", TxNamespaceHandler.getTransactionManagerName(element));
-
+		// 解析 <tx:attributes>
 		List<Element> txAttributes = DomUtils.getChildElementsByTagName(element, ATTRIBUTES_ELEMENT);
 		if (txAttributes.size() > 1) {
+			// 大于1个有异常
 			parserContext.getReaderContext().error(
 					"Element <attributes> is allowed at most once inside element <advice>", element);
-		}
-		else if (txAttributes.size() == 1) {
+		} else if (txAttributes.size() == 1) {
 			// Using attributes source.
 			Element attributeSourceElement = txAttributes.get(0);
 			RootBeanDefinition attributeSourceDefinition = parseAttributeSource(attributeSourceElement, parserContext);
 			builder.addPropertyValue("transactionAttributeSource", attributeSourceDefinition);
-		}
-		else {
-			// Assume annotations source.
+		} else {
+			// Assume annotations source. 使用注解
 			builder.addPropertyValue("transactionAttributeSource",
 					new RootBeanDefinition("org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"));
 		}
 	}
 
+	/**
+	 * 解析<tx:attributes>
+	 * <tx:method name="" propagation="" /> --> NameMatchTransactionAttributeSource
+	 *
+	 * @param attrEle
+	 * @param parserContext
+	 * @return
+	 */
 	private RootBeanDefinition parseAttributeSource(Element attrEle, ParserContext parserContext) {
+		// 1.获取所有列表
 		List<Element> methods = DomUtils.getChildElementsByTagName(attrEle, METHOD_ELEMENT);
 		ManagedMap<TypedStringValue, RuleBasedTransactionAttribute> transactionAttributeMap =
 				new ManagedMap<>(methods.size());
 		transactionAttributeMap.setSource(parserContext.extractSource(attrEle));
 
 		for (Element methodEle : methods) {
+			// 名称
 			String name = methodEle.getAttribute(METHOD_NAME_ATTRIBUTE);
 			TypedStringValue nameHolder = new TypedStringValue(name);
 			nameHolder.setSource(parserContext.extractSource(methodEle));
 
 			RuleBasedTransactionAttribute attribute = new RuleBasedTransactionAttribute();
+			// propagation
 			String propagation = methodEle.getAttribute(PROPAGATION_ATTRIBUTE);
+			// isolation
 			String isolation = methodEle.getAttribute(ISOLATION_ATTRIBUTE);
+			// timeout
 			String timeout = methodEle.getAttribute(TIMEOUT_ATTRIBUTE);
+			// read-only
 			String readOnly = methodEle.getAttribute(READ_ONLY_ATTRIBUTE);
 			if (StringUtils.hasText(propagation)) {
 				attribute.setPropagationBehaviorName(RuleBasedTransactionAttribute.PREFIX_PROPAGATION + propagation);
@@ -118,8 +135,7 @@ class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 			if (StringUtils.hasText(timeout)) {
 				try {
 					attribute.setTimeout(Integer.parseInt(timeout));
-				}
-				catch (NumberFormatException ex) {
+				} catch (NumberFormatException ex) {
 					parserContext.getReaderContext().error("Timeout must be an integer value: [" + timeout + "]", methodEle);
 				}
 			}
@@ -130,11 +146,11 @@ class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 			List<RollbackRuleAttribute> rollbackRules = new LinkedList<>();
 			if (methodEle.hasAttribute(ROLLBACK_FOR_ATTRIBUTE)) {
 				String rollbackForValue = methodEle.getAttribute(ROLLBACK_FOR_ATTRIBUTE);
-				addRollbackRuleAttributesTo(rollbackRules,rollbackForValue);
+				addRollbackRuleAttributesTo(rollbackRules, rollbackForValue);
 			}
 			if (methodEle.hasAttribute(NO_ROLLBACK_FOR_ATTRIBUTE)) {
 				String noRollbackForValue = methodEle.getAttribute(NO_ROLLBACK_FOR_ATTRIBUTE);
-				addNoRollbackRuleAttributesTo(rollbackRules,noRollbackForValue);
+				addNoRollbackRuleAttributesTo(rollbackRules, noRollbackForValue);
 			}
 			attribute.setRollbackRules(rollbackRules);
 

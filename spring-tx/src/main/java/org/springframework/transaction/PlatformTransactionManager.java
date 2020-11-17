@@ -41,6 +41,7 @@ import org.springframework.lang.Nullable;
  * @since 16.05.2003
  * @see org.springframework.transaction.support.TransactionTemplate
  * @see org.springframework.transaction.interceptor.TransactionInterceptor
+ * 事务管理器接口，Spring为各个平台都提供了事务管理器
  */
 public interface PlatformTransactionManager extends TransactionManager {
 

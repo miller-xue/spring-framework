@@ -40,6 +40,7 @@ import org.springframework.lang.Nullable;
  * @see PlatformTransactionManager#getTransaction(TransactionDefinition)
  * @see org.springframework.transaction.support.DefaultTransactionDefinition
  * @see org.springframework.transaction.interceptor.TransactionAttribute
+ * 事务定义信息（隔离级别，传播行为，超时，只读）
  */
 public interface TransactionDefinition {
 
