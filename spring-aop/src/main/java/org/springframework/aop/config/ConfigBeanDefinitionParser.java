@@ -381,7 +381,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 					beanDefinitions, beanReferences);
 
 			// configure the advisor
-			// 创建Advisor 通知其类的BeanDefinition对象
+			// 创建Advisor 通知其类的BeanDefinition对象 todo 封装到Advisor内
 			RootBeanDefinition advisorDefinition = new RootBeanDefinition(AspectJPointcutAdvisor.class);
 			advisorDefinition.setSource(parserContext.extractSource(adviceElement));
 			// 给通知器设置构造器Advice对象属性值

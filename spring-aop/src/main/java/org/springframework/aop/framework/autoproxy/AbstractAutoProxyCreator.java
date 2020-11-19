@@ -362,7 +362,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// Create proxy if we have advice.
 		// 查找对代理类相关的advisor对象集合，此处就与point-cut表达式有关了
 		// 第一步：查找候选的Advisor（增强器）
-		// 第二步：针对目标对象获取合适的Advisor（增强器）
+		// 第二步：针对目标对象获取合适的Advisor（增强器）或者Advice
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		// 对应的advisor不为空才采取代理
 		if (specificInterceptors != DO_NOT_PROXY) {
@@ -562,6 +562,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 		Advisor[] advisors = new Advisor[allInterceptors.size()];
 		for (int i = 0; i < allInterceptors.size(); i++) {
+			// 所有Advice都封装成Advisor
 			advisors[i] = this.advisorAdapterRegistry.wrap(allInterceptors.get(i));
 		}
 		return advisors;
