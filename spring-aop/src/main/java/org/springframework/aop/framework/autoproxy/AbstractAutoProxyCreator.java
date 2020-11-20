@@ -364,6 +364,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// 第一步：查找候选的Advisor（增强器）
 		// 第二步：针对目标对象获取合适的Advisor（增强器）或者Advice
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
+
 		// 对应的advisor不为空才采取代理
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);

@@ -33,11 +33,13 @@ import org.springframework.aop.Advisor;
  * do so only if you need to introduce more Advisor or Advice types to Spring.
  *
  * @author Rod Johnson
- */
-
-/**
+ *
  * Advisor适配器。判断此接口的是不是能支持对应的Advice。五种通知类型，只
  * 有三种通知类型适配器。这里可以想一下为什么只有三种。
+ * AspectJAfterThrowingAdvice
+ * MethodBeforeAdviceAdapter
+ * ThrowsAdviceAdapter
+ * SpringAOP 没有methodBefore，环绕不需要适配器
  */
 public interface AdvisorAdapter {
 

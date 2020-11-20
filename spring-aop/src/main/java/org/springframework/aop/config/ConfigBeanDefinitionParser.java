@@ -154,7 +154,9 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	 * with the supplied {@link BeanDefinitionRegistry}.
 	 * 解析的是SpringAOP的实现，Spring的实现主要是靠接口来实现操作的，包括pointcut
 	 * <aop:advisor advice-ref="" pointcut=""/>
-	 */
+	 *
+	 * <aop:advisor id="xxx" advice-ref="sleepAdvice" pointcut="execution(* *..*.*ServiceImpl.*(..))"/>
+ei	 */
 	private void parseAdvisor(Element advisorElement, ParserContext parserContext) {
 		AbstractBeanDefinition advisorDef = createAdvisorBeanDefinition(advisorElement, parserContext);
 		String id = advisorElement.getAttribute(ID);
@@ -163,13 +165,16 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			this.parseState.push(new AdvisorEntry(id));
 			String advisorBeanName = id;
 			if (StringUtils.hasText(advisorBeanName)) {
+				// 注册 DefaultBeanFactoryPointcutAdvisor
 				parserContext.getRegistry().registerBeanDefinition(advisorBeanName, advisorDef);
-			}
-			else {
+			} else {
 				advisorBeanName = parserContext.getReaderContext().registerWithGeneratedName(advisorDef);
 			}
-
+			// 解析pointcut 是POINTCUT 就是  AspectJExpressionPointcut 对象 要么是ref引用
 			Object pointcut = parsePointcutProperty(advisorElement, parserContext);
+
+
+			// 注册 AdvisorComponentDefinition 对象
 			if (pointcut instanceof BeanDefinition) {
 				advisorDef.getPropertyValues().add(POINTCUT, pointcut);
 				parserContext.registerComponent(
@@ -189,21 +194,23 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	/**
 	 * Create a {@link RootBeanDefinition} for the advisor described in the supplied. Does <strong>not</strong>
 	 * parse any associated '{@code pointcut}' or '{@code pointcut-ref}' attributes.
+	 * 创建 {@link DefaultBeanFactoryPointcutAdvisor}
 	 */
 	private AbstractBeanDefinition createAdvisorBeanDefinition(Element advisorElement, ParserContext parserContext) {
 		RootBeanDefinition advisorDefinition = new RootBeanDefinition(DefaultBeanFactoryPointcutAdvisor.class);
 		advisorDefinition.setSource(parserContext.extractSource(advisorElement));
-
+		// 具体通知类
 		String adviceRef = advisorElement.getAttribute(ADVICE_REF);
 		if (!StringUtils.hasText(adviceRef)) {
 			parserContext.getReaderContext().error(
 					"'advice-ref' attribute contains empty value.", advisorElement, this.parseState.snapshot());
 		}
 		else {
+			// 设置Advice
 			advisorDefinition.getPropertyValues().add(
 					ADVICE_BEAN_NAME, new RuntimeBeanNameReference(adviceRef));
 		}
-
+		// 设置order
 		if (advisorElement.hasAttribute(ORDER_PROPERTY)) {
 			advisorDefinition.getPropertyValues().add(
 					ORDER_PROPERTY, advisorElement.getAttribute(ORDER_PROPERTY));
@@ -381,7 +388,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 					beanDefinitions, beanReferences);
 
 			// configure the advisor
-			// 创建Advisor 通知其类的BeanDefinition对象 todo 封装到Advisor内
+			// 创建Advisor 通知其类的BeanDefinition对象
 			RootBeanDefinition advisorDefinition = new RootBeanDefinition(AspectJPointcutAdvisor.class);
 			advisorDefinition.setSource(parserContext.extractSource(adviceElement));
 			// 给通知器设置构造器Advice对象属性值
