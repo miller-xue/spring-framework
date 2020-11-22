@@ -54,34 +54,44 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 	@Override
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 			Advised config, Method method, @Nullable Class<?> targetClass) {
+		// 获取所有通知
+		Advisor[] advisors = config.getAdvisors();
 
 		// This is somewhat tricky... We have to process introductions first,
 		// but we need to preserve order in the ultimate list.
 		// 返回值集合，里面装的都是Interceptor或者它的子接口MethodInterceptor
-		AdvisorAdapterRegistry registry = GlobalAdvisorAdapterRegistry.getInstance();
-		// 获取所有通知
-		Advisor[] advisors = config.getAdvisors();
 		List<Object> interceptorList = new ArrayList<>(advisors.length);
+		// advisor适配器注册中心
+		// MethodBeforeAdviceAdapter：
+		// AfterReturningAdviceAdapter：
+		// ThrowsAdviceAdapter：
+		AdvisorAdapterRegistry registry = GlobalAdvisorAdapterRegistry.getInstance();
+		// 获取目标类的类型
 		Class<?> actualClass = (targetClass != null ? targetClass : method.getDeclaringClass());
+		//  是否有引介
 		Boolean hasIntroductions = null;
-
+		// 去产生代理对象过程中，针对该目标方法获取到所有合适的Advisor集合
 		for (Advisor advisor : advisors) {
 			if (advisor instanceof PointcutAdvisor) {
 				// Add it conditionally.
 				PointcutAdvisor pointcutAdvisor = (PointcutAdvisor) advisor;
-				if (config.isPreFiltered() || pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) {
+				// 如果该Advisor可以对目标类进行增强，则进行后续操作
+				if (config.isPreFiltered()
+						|| pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) {
+					// 获取方法匹配器，该方法匹配器可以根据指定切入点表达式进行方法匹配
 					MethodMatcher mm = pointcutAdvisor.getPointcut().getMethodMatcher();
 					boolean match;
+					// 使用方法匹配器工具类进行方法匹配
 					if (mm instanceof IntroductionAwareMethodMatcher) {
 						if (hasIntroductions == null) {
 							hasIntroductions = hasMatchingIntroductions(advisors, actualClass);
 						}
 						match = ((IntroductionAwareMethodMatcher) mm).matches(method, actualClass, hasIntroductions);
-					}
-					else {
+					} else {
 						match = mm.matches(method, actualClass);
 					}
 					if (match) {
+						// 获取所有methodInterceptor
 						MethodInterceptor[] interceptors = registry.getInterceptors(advisor);
 						if (mm.isRuntime()) {
 							// Creating a new object instance in the getInterceptors() method
@@ -89,8 +99,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 							for (MethodInterceptor interceptor : interceptors) {
 								interceptorList.add(new InterceptorAndDynamicMethodMatcher(interceptor, mm));
 							}
-						}
-						else {
+						} else {
 							interceptorList.addAll(Arrays.asList(interceptors));
 						}
 					}

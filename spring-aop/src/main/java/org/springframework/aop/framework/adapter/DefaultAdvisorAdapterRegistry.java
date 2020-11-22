@@ -40,7 +40,8 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 
 /**
  * AdvisorAdapterRegistry的实现类。也是SpringAOP中唯一默认的实现类。持
- * 有：MethodBeforeAdviceAdapter、AfterReturningAdviceAdapter、
+ * 有：MethodBeforeAdviceAdapter
+ * 、AfterReturningAdviceAdapter、
  * ThrowsAdviceAdapter实例。
  */
 @SuppressWarnings("serial")
@@ -85,6 +86,8 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 	public MethodInterceptor[] getInterceptors(Advisor advisor) throws UnknownAdviceTypeException {
 		List<MethodInterceptor> interceptors = new ArrayList<>(3);
 		Advice advice = advisor.getAdvice();
+		// 环绕通知
+		// MethodInterceptor | AspectJAroundAdvice | AspectJAfterAdvice 适配成 MethodInterceptor
 		if (advice instanceof MethodInterceptor) {
 			interceptors.add((MethodInterceptor) advice);
 		}
