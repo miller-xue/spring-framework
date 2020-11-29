@@ -71,12 +71,13 @@ class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
 	@Override
 	protected Class<?> getBeanClass(Element element) {
+		// <tx:advice>标签对应的BeanDefinition对象的BeanClass
 		return TransactionInterceptor.class;
 	}
 
 	@Override
 	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
-		// 解析<tx:advice transaction-manager="">
+		// 解析<tx:advice transaction-manager=""> 事务管理器
 		builder.addPropertyReference("transactionManager", TxNamespaceHandler.getTransactionManagerName(element));
 		// 解析 <tx:attributes>
 		List<Element> txAttributes = DomUtils.getChildElementsByTagName(element, ATTRIBUTES_ELEMENT);

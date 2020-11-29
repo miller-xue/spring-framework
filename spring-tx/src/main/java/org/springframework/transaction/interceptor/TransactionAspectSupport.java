@@ -337,23 +337,29 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		}
 
 		// If the transaction attribute is null, the method is non-transactional.
+		// 获取事务信息，如果属性为空，那么说明该方法是非事务支持的
 		TransactionAttributeSource tas = getTransactionAttributeSource();
+		// 事务属性信息
 		final TransactionAttribute txAttr = (tas != null ? tas.getTransactionAttribute(method, targetClass) : null);
+		// 具体平台事务管理器
 		final PlatformTransactionManager tm = determineTransactionManager(txAttr);
 		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr);
 
 		if (txAttr == null || !(tm instanceof CallbackPreferringPlatformTransactionManager)) {
 			// Standard transaction demarcation with getTransaction and commit/rollback calls.
+			// 创建事务信息对象，同时通过平台事务管理器创建事务
 			TransactionInfo txInfo = createTransactionIfNecessary(tm, txAttr, joinpointIdentification);
 
 			Object retVal;
 			try {
 				// This is an around advice: Invoke the next interceptor in the chain.
 				// This will normally result in a target object being invoked.
+				// 执行目标对象方法
 				retVal = invocation.proceedWithInvocation();
 			}
 			catch (Throwable ex) {
 				// target invocation exception
+				// 执行事务rollback方法
 				completeTransactionAfterThrowing(txInfo, ex);
 				throw ex;
 			}
@@ -368,7 +374,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 					retVal = VavrDelegate.evaluateTryFailure(retVal, txAttr, status);
 				}
 			}
-
+			// 执行事务commit方法
 			commitTransactionAfterReturning(txInfo);
 			return retVal;
 		}
