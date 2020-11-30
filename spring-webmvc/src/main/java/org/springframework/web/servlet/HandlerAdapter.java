@@ -60,6 +60,7 @@ public interface HandlerAdapter {
 	 * }
 	 * @param handler handler object to check
 	 * @return whether or not this object can use the given handler
+	 *
 	 */
 	boolean supports(Object handler);
 

@@ -237,6 +237,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 		if (produces == null) {
 			return null;
 		}
+		// 获取到RequestMapping注解中的Value属性
 		PatternsRequestCondition patterns = this.patternsCondition.getMatchingCondition(request);
 		if (patterns == null) {
 			return null;

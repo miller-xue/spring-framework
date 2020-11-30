@@ -780,6 +780,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			if (session != null) {
 				Object mutex = WebUtils.getSessionMutex(session);
 				synchronized (mutex) {
+					// 参数绑定
 					mav = invokeHandlerMethod(request, response, handlerMethod);
 				}
 			}

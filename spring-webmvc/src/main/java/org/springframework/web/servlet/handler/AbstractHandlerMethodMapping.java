@@ -212,11 +212,13 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @see #handlerMethodsInitialized
 	 */
 	protected void initHandlerMethods() {
+		// 获取当前Spring容器中所有bean名称
 		for (String beanName : getCandidateBeanNames()) {
 			if (!beanName.startsWith(SCOPED_TARGET_NAME_PREFIX)) {
 				processCandidateBean(beanName);
 			}
 		}
+		// 子对象初始化
 		handlerMethodsInitialized(getHandlerMethods());
 	}
 
@@ -246,6 +248,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	protected void processCandidateBean(String beanName) {
 		Class<?> beanType = null;
 		try {
+			// 根据bean名称，从当前spring容器中获取对应的Bean的type
 			beanType = obtainApplicationContext().getType(beanName);
 		}
 		catch (Throwable ex) {
@@ -254,7 +257,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				logger.trace("Could not resolve type for bean '" + beanName + "'", ex);
 			}
 		}
+		// 如果是handler，则需要查找HandlerMethod（如果带有@controller活着@RequestMapping则是Handler对象）
 		if (beanType != null && isHandler(beanType)) {
+			// 从Controller或者RequestMapping注解的Bean中，找到所有HandlerMethod对象，并进行存储
 			detectHandlerMethods(beanName);
 		}
 	}
@@ -265,17 +270,25 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @see #getMappingForMethod
 	 */
 	protected void detectHandlerMethods(Object handler) {
+		// 获取handler的Class类型
 		Class<?> handlerType = (handler instanceof String ?
 				obtainApplicationContext().getType((String) handler) : handler.getClass());
 
 		if (handlerType != null) {
+			// 如果该类是通过cglib代理的代理类，则获取其父类型，否则的话，直接返回该类
 			Class<?> userType = ClassUtils.getUserClass(handlerType);
+			// 存储Method方法和RequestMapping注解信息的映射关系
+			// 该映射关系会解析成我们需要的其他两个映射关系
+			// Key是Controller类中的method对象，value是RequestMappingInfo对象
+
+			// 将Controller类中的方法和头上的@RequestMapping注解简历映射关系
+			// 注意: 此时还没有简历请求URL和处理器方法之间的映射关系
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
 					(MethodIntrospector.MetadataLookup<T>) method -> {
 						try {
+							// 获取bean上面和method上面的RequestMapping注解信息，封装到RequestMappingInfo对象中
 							return getMappingForMethod(method, userType);
-						}
-						catch (Throwable ex) {
+						} catch (Throwable ex) {
 							throw new IllegalStateException("Invalid mapping on handler class [" +
 									userType.getName() + "]: " + method, ex);
 						}
@@ -285,6 +298,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			}
 			methods.forEach((method, mapping) -> {
 				Method invocableMethod = AopUtils.selectInvocableMethod(method, userType);
+				// 注册HandlerMethod和RequestMappingInfo对象关系
+				// 注册请求URL和RequestMappingInfo对象的关系
 				registerHandlerMethod(handler, invocableMethod, mapping);
 			});
 		}
@@ -360,14 +375,16 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 */
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+		// 获取查找路径(部分)
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		request.setAttribute(LOOKUP_PATH, lookupPath);
 		this.mappingRegistry.acquireReadLock();
 		try {
+			// 根据请求查找路径（部分URL）。获取最合适的HandlerMethod对象
 			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
+			// 对HandlerMethod对象包含的bean属性进行实例化，在返回HandlerMethod对象
 			return (handlerMethod != null ? handlerMethod.createWithResolvedBean() : null);
-		}
-		finally {
+		} finally {
 			this.mappingRegistry.releaseReadLock();
 		}
 	}
@@ -384,8 +401,11 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Nullable
 	protected HandlerMethod lookupHandlerMethod(String lookupPath, HttpServletRequest request) throws Exception {
 		List<Match> matches = new ArrayList<>();
+		// 根据查找路径（URL）去urlLookup集合中获取匹配到的RequestMappingInfo集合
 		List<T> directPathMatches = this.mappingRegistry.getMappingsByUrl(lookupPath);
 		if (directPathMatches != null) {
+			// TODO
+			// 将RequestMappingInfo对象和HandlerMethod对象进行匹配，将匹配的信息封装到Mathch对象，再将Match对象放入
 			addMatchingMappings(directPathMatches, matches, request);
 		}
 		if (matches.isEmpty()) {
@@ -395,7 +415,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		if (!matches.isEmpty()) {
 			Comparator<Match> comparator = new MatchComparator(getMappingComparator(request));
+			// 使用指定比较器，将匹配到的Match对象（RequestMappingInfo，HandlerMethod）进行排序
 			matches.sort(comparator);
+			// 找到最优匹配项
 			Match bestMatch = matches.get(0);
 			if (matches.size() > 1) {
 				if (logger.isTraceEnabled()) {
@@ -404,7 +426,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				if (CorsUtils.isPreFlightRequest(request)) {
 					return PREFLIGHT_AMBIGUOUS_MATCH;
 				}
+				// 获取次优匹配项
 				Match secondBestMatch = matches.get(1);
+				// 如何最优匹配项和次优匹配项相同，则报错
 				if (comparator.compare(bestMatch, secondBestMatch) == 0) {
 					Method m1 = bestMatch.handlerMethod.getMethod();
 					Method m2 = secondBestMatch.handlerMethod.getMethod();
@@ -414,6 +438,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 			}
 			request.setAttribute(BEST_MATCHING_HANDLER_ATTRIBUTE, bestMatch.handlerMethod);
+			//返回最匹配的HandlerMethod对象
 			handleMatch(bestMatch.mapping, lookupPath, request);
 			return bestMatch.handlerMethod;
 		}
@@ -424,8 +449,10 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	private void addMatchingMappings(Collection<T> mappings, List<Match> matches, HttpServletRequest request) {
 		for (T mapping : mappings) {
+			// 获取待匹配的RequestMappingInfo对象，封装RequestMapping注解信息
 			T match = getMatchingMapping(mapping, request);
 			if (match != null) {
+				// 将匹配的RequestMappingInfoh和HandlerMethod对象封装到Match对象中，并添加到集合
 				matches.add(new Match(match, this.mappingRegistry.getMappings().get(mapping)));
 			}
 		}
@@ -596,12 +623,15 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			}
 			this.readWriteLock.writeLock().lock();
 			try {
+				// 创建HandlerMethod对象，用于封装处理器类和其中一个方法
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
 				validateMethodMapping(handlerMethod, mapping);
+				// 存储RequestMappingInfo对象和HandlerMethod对象的映射关系
 				this.mappingLookup.put(mapping, handlerMethod);
 
 				List<String> directUrls = getDirectUrls(mapping);
 				for (String url : directUrls) {
+					// 存储RequestMappingInfo对象和请求url的映射关系
 					this.urlLookup.add(url, mapping);
 				}
 

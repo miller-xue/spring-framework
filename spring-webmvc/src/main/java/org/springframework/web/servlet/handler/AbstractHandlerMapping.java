@@ -383,6 +383,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	/**
 	 * Look up a handler for the given request, falling back to the default
 	 * handler if no specific one is found.
+	 *
 	 * @param request current HTTP request
 	 * @return the corresponding handler instance, or the default handler
 	 * @see #getHandlerInternal
@@ -390,6 +391,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	@Override
 	@Nullable
 	public final HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
+		// 调用具体的子类去获取不同类型的处理器对象，（比如获取到@Controller和@RequestMapping注解的处理器HandlerMethod）
 		Object handler = getHandlerInternal(request);
 		if (handler == null) {
 			handler = getDefaultHandler();
@@ -407,8 +409,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 		if (logger.isTraceEnabled()) {
 			logger.trace("Mapped to " + handler);
-		}
-		else if (logger.isDebugEnabled() && !request.getDispatcherType().equals(DispatcherType.ASYNC)) {
+		} else if (logger.isDebugEnabled() && !request.getDispatcherType().equals(DispatcherType.ASYNC)) {
 			logger.debug("Mapped to " + executionChain.getHandler());
 		}
 
