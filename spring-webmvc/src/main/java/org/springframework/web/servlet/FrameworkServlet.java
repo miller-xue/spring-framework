@@ -576,6 +576,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 					if (cwac.getParent() == null) {
 						// The context instance was injected without an explicit parent -> set
 						// the root application context (if any; may be null) as the parent
+						// 父容器
 						cwac.setParent(rootContext);
 					}
 					// 初始化spring容器
@@ -600,7 +601,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
 			synchronized (this.onRefreshMonitor) {
-				// 刷新容器中的策略
+				// 刷新前端容器中的策略
 				onRefresh(wac);
 			}
 		}

@@ -877,7 +877,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	protected <T> List<T> getDefaultStrategies(ApplicationContext context, Class<T> strategyInterface) {
 		// 获取策略接口名称
 		String key = strategyInterface.getName();
-		// 获取具体策略类名称
+		// 获取具体策略类名称逗号分隔可能有多个策略
 		String value = defaultStrategies.getProperty(key);
 		if (value != null) {
 			// 获取所有具体策略类的名称集合
@@ -886,7 +886,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			for (String className : classNames) {
 				try {
 					Class<?> clazz = ClassUtils.forName(className, DispatcherServlet.class.getClassLoader());
-					// 创建具体策略实例
+					// 创建具体策略实例（容器创建的）
 					Object strategy = createDefaultStrategy(context, clazz);
 					strategies.add((T) strategy);
 				} catch (ClassNotFoundException ex) {
@@ -1027,8 +1027,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
-				// 处理文件上传的请求
-//				TODO
+				// 处理文件上传的请求，如果是返回的是被转换过的request
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
@@ -1037,6 +1036,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// 需要注意的是@Controller注解的类，它不是我们这里要查找的处理器，我们要查找的的处理器是@RequestMapping对应的方法
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
+//					404
 					noHandlerFound(processedRequest, response);
 					return;
 				}
@@ -1185,31 +1185,29 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * Convert the request into a multipart request, and make multipart resolver available.
 	 * <p>If no multipart resolver is set, simply use the existing request.
+	 *
 	 * @param request current HTTP request
 	 * @return the processed request (multipart wrapper if necessary)
 	 * @see MultipartResolver#resolveMultipart
 	 */
 	protected HttpServletRequest checkMultipart(HttpServletRequest request) throws MultipartException {
+		// 判断是否是文件上传
 		if (this.multipartResolver != null && this.multipartResolver.isMultipart(request)) {
 			if (WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class) != null) {
 				if (request.getDispatcherType().equals(DispatcherType.REQUEST)) {
 					logger.trace("Request already resolved to MultipartHttpServletRequest, e.g. by MultipartFilter");
 				}
-			}
-			else if (hasMultipartException(request)) {
+			} else if (hasMultipartException(request)) {
 				logger.debug("Multipart resolution previously failed for current request - " +
 						"skipping re-resolution for undisturbed error rendering");
-			}
-			else {
+			} else {
 				try {
 					return this.multipartResolver.resolveMultipart(request);
-				}
-				catch (MultipartException ex) {
+				} catch (MultipartException ex) {
 					if (request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) != null) {
 						logger.debug("Multipart resolution failed for error dispatch", ex);
 						// Keep processing error dispatch with regular request handle below
-					}
-					else {
+					} else {
 						throw ex;
 					}
 				}
@@ -1236,7 +1234,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * Clean up any resources used by the given multipart request (if any).
 	 * @param request current HTTP request
-	 * @see MultipartResolver#cleanupMultipartMethodBeforeAdviceInterceptor
+	 * @see MultipartResolver#cleanupMultipart
 	 */
 	protected void cleanupMultipart(HttpServletRequest request) {
 		if (this.multipartResolver != null) {
