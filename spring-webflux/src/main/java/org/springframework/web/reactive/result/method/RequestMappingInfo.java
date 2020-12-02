@@ -211,6 +211,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * <p>For example the returned instance may contain the subset of URL patterns that match to
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
+	 * 判断RequestMappingInfo和exchange是否匹配
 	 */
 	@Override
 	@Nullable

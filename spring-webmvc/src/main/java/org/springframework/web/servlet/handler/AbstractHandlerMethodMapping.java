@@ -218,7 +218,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				processCandidateBean(beanName);
 			}
 		}
-		// 子对象初始化
+		// 钩子函数
 		handlerMethodsInitialized(getHandlerMethods());
 	}
 
@@ -277,9 +277,12 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		if (handlerType != null) {
 			// 如果该类是通过cglib代理的代理类，则获取其父类型，否则的话，直接返回该类
 			Class<?> userType = ClassUtils.getUserClass(handlerType);
-			// 存储Method方法和RequestMapping注解信息的映射关系
-			// 该映射关系会解析成我们需要的其他两个映射关系
-			// Key是Controller类中的method对象，value是RequestMappingInfo对象
+
+			/**
+			 * 存储Method方法和RequestMapping注解信息的映射关系
+			 * 该映射关系会解析成我们需要的其他两个映射关系
+			 * Key是Controller类中的method对象，value是RequestMappingInfo对象
+			 */
 
 			// 将Controller类中的方法和头上的@RequestMapping注解简历映射关系
 			// 注意: 此时还没有简历请求URL和处理器方法之间的映射关系
@@ -297,7 +300,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				logger.trace(formatMappings(userType, methods));
 			}
 			methods.forEach((method, mapping) -> {
+				// 可执行的method
 				Method invocableMethod = AopUtils.selectInvocableMethod(method, userType);
+
 				// 注册HandlerMethod和RequestMappingInfo对象关系
 				// 注册请求URL和RequestMappingInfo对象的关系
 				registerHandlerMethod(handler, invocableMethod, mapping);
@@ -401,6 +406,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Nullable
 	protected HandlerMethod lookupHandlerMethod(String lookupPath, HttpServletRequest request) throws Exception {
 		List<Match> matches = new ArrayList<>();
+
 		// 根据查找路径（URL）去urlLookup集合中获取匹配到的RequestMappingInfo集合
 		List<T> directPathMatches = this.mappingRegistry.getMappingsByUrl(lookupPath);
 		if (directPathMatches != null) {
@@ -616,22 +622,31 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			this.readWriteLock.readLock().unlock();
 		}
 
+		/**
+		 *
+		 * @param mapping
+		 * @param handler 可能是类对象，可能是类名
+		 * @param method
+		 */
 		public void register(T mapping, Object handler, Method method) {
 			// Assert that the handler method is not a suspending one.
 			if (KotlinDetector.isKotlinType(method.getDeclaringClass()) && KotlinDelegate.isSuspend(method)) {
 				throw new IllegalStateException("Unsupported suspending handler method detected: " + method);
 			}
+			// 锁
 			this.readWriteLock.writeLock().lock();
 			try {
 				// 创建HandlerMethod对象，用于封装处理器类和其中一个方法
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
+				// 校验handlerMapping
 				validateMethodMapping(handlerMethod, mapping);
 				// 存储RequestMappingInfo对象和HandlerMethod对象的映射关系
 				this.mappingLookup.put(mapping, handlerMethod);
 
+				// 多个地址对应一个mapping
 				List<String> directUrls = getDirectUrls(mapping);
 				for (String url : directUrls) {
-					// 存储RequestMappingInfo对象和请求url的映射关系
+					// 存储url和List<mapping> 映射，一个地址可能对应多个mapping
 					this.urlLookup.add(url, mapping);
 				}
 

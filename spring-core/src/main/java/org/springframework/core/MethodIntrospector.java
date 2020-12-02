@@ -57,7 +57,7 @@ public final class MethodIntrospector {
 	 * or an empty map in case of no match
 	 */
 	public static <T> Map<Method, T> selectMethods(Class<?> targetType, final MetadataLookup<T> metadataLookup) {
-		// method和RequestMappingInfo对象
+		// method和Mapping映射对象
 		final Map<Method, T> methodMap = new LinkedHashMap<>();
 		Set<Class<?>> handlerTypes = new LinkedHashSet<>();
 		Class<?> specificHandlerType = null;
@@ -77,6 +77,7 @@ public final class MethodIntrospector {
 
 				// 找到具体的方法
 				Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
+				// 获取匿名方法
 				// 此处会调用RequestMappingHandlerMapping类的getMappingForMethod方法
 				// 此处的T就是RequestMappingInfo对象
 				T result = metadataLookup.inspect(specificMethod);

@@ -184,6 +184,7 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport
 			}
 			if (hasCorsConfigurationSource(handler)) {
 				ServerHttpRequest request = exchange.getRequest();
+				// 判断跨域
 				CorsConfiguration config = (this.corsConfigurationSource != null ? this.corsConfigurationSource.getCorsConfiguration(exchange) : null);
 				CorsConfiguration handlerConfig = getCorsConfiguration(handler, exchange);
 				config = (config != null ? config.combine(handlerConfig) : handlerConfig);

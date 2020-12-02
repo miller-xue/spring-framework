@@ -167,7 +167,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		this.config.setTrailingSlashMatch(this.useTrailingSlashMatch);
 		this.config.setRegisteredSuffixPatternMatch(this.useRegisteredSuffixPatternMatch);
 		this.config.setContentNegotiationManager(getContentNegotiationManager());
-
+		// 调用父类初始化方法
 		super.afterPropertiesSet();
 	}
 
@@ -205,7 +205,8 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	/**
 	 * {@inheritDoc}
 	 * <p>Expects a handler to have either a type-level @{@link Controller}
-	 * annotation or a type-level @{@link RequestMapping} annotation.
+	 * annotation or a type-level @{@link RequestMapping} annotation.‘
+	 * 判断是不是handler是靠Controller和RequestMapping注解
 	 */
 	@Override
 	protected boolean isHandler(Class<?> beanType) {
@@ -220,6 +221,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * does not have a {@code @RequestMapping} annotation.
 	 * @see #getCustomMethodCondition(Method)
 	 * @see #getCustomTypeCondition(Class)
+	 * 获取方法的映射对象
 	 */
 	@Override
 	@Nullable

@@ -285,6 +285,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		try {
 			HandlerMethod handlerMethod;
 			try {
+				// 获取handlerMethod
 				handlerMethod = lookupHandlerMethod(exchange);
 			}
 			catch (Exception ex) {
@@ -311,11 +312,13 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Nullable
 	protected HandlerMethod lookupHandlerMethod(ServerWebExchange exchange) throws Exception {
 		List<Match> matches = new ArrayList<>();
+		// 获取所有匹配的Match对象（是HandlerMapping和HandlerMethod）
 		addMatchingMappings(this.mappingRegistry.getMappings().keySet(), matches, exchange);
 
 		if (!matches.isEmpty()) {
 			Comparator<Match> comparator = new MatchComparator(getMappingComparator(exchange));
 			matches.sort(comparator);
+			// 最佳匹配
 			Match bestMatch = matches.get(0);
 			if (matches.size() > 1) {
 				if (logger.isTraceEnabled()) {
